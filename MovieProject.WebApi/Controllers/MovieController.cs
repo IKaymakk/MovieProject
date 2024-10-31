@@ -36,7 +36,7 @@ namespace MovieProject.WebApi.Controllers
             await _mediator.Send(command);
             return Ok("Film Eklendi");
         }
-        [HttpPut]3
+        [HttpPut]
         public async Task<IActionResult> UpdateMovie(UpdateMovieCommand command)
         {
             await _mediator.Send(command);
