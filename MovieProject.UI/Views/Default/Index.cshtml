@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<html>
+<head>
+    <style>
+        .slidermovieimage {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider sliderv2">
+        <div class="container">
+            <div class="row">
+                <div class="slider-single-item">
+                    @await Component.InvokeAsync("_SliderVC")
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

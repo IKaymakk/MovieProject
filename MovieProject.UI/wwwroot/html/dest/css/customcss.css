@@ -1,0 +1,13 @@
+﻿slidermovieimage {
+    width: 100px; /* PC boyutunda genişlik */
+}
+
+
+
+/* Mobil uyum için */
+@media (max-width: 768px) {
+    .slidermovieimage {
+        width: 100%; /* Mobilde tam genişlik */
+        max-width: 100%; /* Aşırı genişlemeyi önler */
+    }
+}

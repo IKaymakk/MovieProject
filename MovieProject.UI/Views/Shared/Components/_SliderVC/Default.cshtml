@@ -1,0 +1,78 @@
+﻿@model List<DTO.UI_Dtos.MovieGenreDto>
+<html>
+<head>
+
+</head>
+
+<body>
+    @foreach (var x in Model)
+    {
+
+
+        var name = x.Name;
+        var year = x.Year;
+
+
+        string displayName = name.Length > 25 ? name.Substring(0, 25) + "..." : name;
+
+        var words = displayName.Split(' ');
+        var lineCount = words.Length > 3 ? 3 : words.Length;
+
+        <div class="movie-item">
+            <div class="row">
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                    <div class="title-in">
+                        <div class="cate">
+
+                            @foreach (var genre in x.Genres)
+                            {
+
+                                <span class="blue"><a href="#">@genre</a></span>
+                            }
+
+
+                        </div>
+                        <h1>
+                            <a class="movietitlename">
+                                @x.Name
+                                <br />
+                                <span>@year</span>
+                            </a>
+                        </h1>
+                        <div class="social-btn">
+                            <a href="#" class="parent-btn"><i class="ion-play"></i> Watch Trailer</a>
+                            <a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>
+                            <div class="hover-bnt">
+                                <a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
+                                <div class="hvr-item">
+                                    <a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+                                    <a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+                                    <a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
+                                    <a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mv-details">
+                            <p><i class="ion-android-star"></i><span>7.4</span> /10</p>
+                            <ul class="mv-infor">
+                                <li>  Run Time: 2h21’ </li>
+                                <li>  Rated: PG-13  </li>
+                                <li>  Release: 1 May 2015</li>
+                            </ul>
+                        </div>
+                        <div class="btn-transform transform-vertical">
+                            <div><a href="#" class="item item-1 redbtn">more detail</a></div>
+                            <div><a href="#" class="item item-2 redbtn hvrbtn">more detail</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="mv-img-2">
+                        <a href="#"><img class="slidermovieimage" src="@x.Image" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
