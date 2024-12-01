@@ -6744,7 +6744,7 @@ ul {
 
 .common-hero {
     height: 385px;
-    background: url('../images/uploads/user-hero-bg.jpg') no-repeat;
+    background: url('/images/background-slider.jpg') no-repeat;
 }
 
     .common-hero:before {
@@ -9456,9 +9456,7 @@ header .top-search {
         color: #abb7c4;
     }
 
-    header .top-search input {
-        background: url('../images/uploads/topsearch.png') no-repeat right 20px center;
-    }
+  
 
 header #nav-icon1 {
     width: 15px;

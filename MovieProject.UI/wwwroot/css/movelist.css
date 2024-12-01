@@ -1,0 +1,20 @@
+﻿.movie-item-style-2 img {
+    width: 100%!important; /* Ekran boyutuna göre genişliği tam yap */
+    height: 300px; /* Yükseklik en-boy oranına göre otomatik ayarlanır */
+    max-height: 400px; /* Çok büyük resimlerin yükseklik sınırını belirler */
+    object-fit: cover; /* Resmin taşmadan kapsayıcıya sığmasını sağlar */
+    border-radius: 8px; /* Köşeleri yuvarlatır */
+    transition: transform 0.3s ease; /* Hover efekti için animasyon */
+}
+
+    /* Hover ile büyütme efekti */
+    .movie-item-style-2 img:hover {
+        transform: scale(1.05); /* %5 büyütme */
+    }
+
+/* Mobil cihazlar için daha küçük resim sınırları */
+@media (max-width: 768px) {
+    .movie-item-style-2 img {
+        max-height: 250px; /* Mobil cihazlarda yükseklik sınırı */
+    }
+}

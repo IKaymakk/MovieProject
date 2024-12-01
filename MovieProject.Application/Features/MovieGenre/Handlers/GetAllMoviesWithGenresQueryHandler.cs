@@ -53,7 +53,6 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
                 ImbdScore = movie.ImbdScore,
                 ReleaseDate = movie.ReleaseDate,
 
-                // Genre bilgilerini mapliyoruz
                 Genres = movie.MovieGenres.Select(g => g.Genre.Name).ToList() // Sadece isimleri alıyoruz
 
             }).ToList();
