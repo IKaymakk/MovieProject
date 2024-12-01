@@ -33,8 +33,10 @@ namespace MovieProject.Persistance.Repositories
         public async Task<List<Movie>> GetAllMoviesWithGenres()
         {
             var movies = await _context.Movies
-                .Include(m => m.MovieGenres) // Movie ile ilişkili MovieGenres tablosunu dahil ediyoruz
-                    .ThenInclude(mg => mg.Genre) // MovieGenres üzerinden Genre bilgisine erişiyoruz
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                    .OrderBy(x => x.CreatedDate)
+                    .Take(5)
                 .ToListAsync();
 
             return movies;
@@ -68,6 +70,18 @@ namespace MovieProject.Persistance.Repositories
         public Task UpdateAsync(MovieGenre entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Movie>> GetTop24Movies()
+        {
+            var top24movies = await _context.Movies
+                .AsNoTracking()
+                .Include(x => x.MovieGenres)
+                    .ThenInclude(x => x.Genre)
+                .OrderByDescending(x => x.Score)
+                .Take(24)
+                .ToListAsync();
+            return top24movies;
         }
     }
 }

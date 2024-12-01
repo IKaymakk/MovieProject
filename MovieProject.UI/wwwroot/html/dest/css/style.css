@@ -4819,6 +4819,7 @@ ul {
     .trailers.full-width,
     .latestnew.full-width,
     .full-width {
+        margin-top: -2em;
         padding: 70px 30px;
     }
 }
@@ -4873,6 +4874,15 @@ ul {
         height: 100%;
         content: "";
     }
+
+.movie-item .mv-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
 
 .movie-items .movie-item img {
     width: 100%;
@@ -6719,7 +6729,6 @@ ul {
     }
 /*movie single hero*/
 .mv-single-hero {
-    background: url('../images/uploads/hero-bg.jpg') no-repeat;
     height: 598px;
 }
 /*series single hero*/
@@ -8436,6 +8445,7 @@ p.ceb-single {
     background: url('/images/background-slider.jpg') no-repeat;
     padding-top: 180px;
     overflow: hidden;
+    background-size: cover;
 }
 
     .sliderv2 .movie-item .title-in {
@@ -8462,7 +8472,6 @@ p.ceb-single {
     font-family: 'Dosis', sans-serif;
     color: #ffffff;
     font-weight: 700;
-    text-transform: uppercase;
     line-height: 60px;
 }
 
@@ -8498,7 +8507,7 @@ p.ceb-single {
     -webkit-border-radius: 30px;
     -moz-border-radius: 30px;
     border-radius: 30px;
-    width: 130px;
+    width: 270px;
 }
 
     .sliderv2 .movie-item .title-in .redbtn:hover {
@@ -9676,7 +9685,7 @@ header#headerv3-light {
 }
 
 footer {
-    background: url('../images/uploads/ft-bg.jpg') no-repeat;
+    background: url('/images/background-slider.jpg') no-repeat; 
     background-position: center;
     background-size: cover;
 }
@@ -9843,3 +9852,42 @@ footer.full-width-ft .ft-copyright {
         font-family: 'Dosis', sans-serif;
         font-weight: 700;
     }
+
+@media (min-width: 500px) {
+    /* Laptoplar ve orta büyüklükteki ekranlar için */
+    .moveimage1 {
+        min-height: 285px !important;
+        max-height: 285px !important;
+    }
+}
+
+@media (min-width: 1551px) {
+    /* Laptoplar ve orta büyüklükteki ekranlar için */
+    .moveimage1 {
+        min-height: 385px !important;
+        max-height: 385px !important;
+    }
+}
+
+@media (min-width: 2051px) {
+    /* Laptoplar ve orta büyüklükteki ekranlar için */
+    .moveimage1 {
+        min-height: 500px !important;
+    }
+}
+
+@media (max-width: 499px) {
+    /* Mobil cihazlar için */
+    .moveimage1 {
+        width: 380px !important;
+        height: 500px !important;
+    }
+}
+
+@media (max-width: 350px) {
+    /* Daha küçük mobil cihazlar için */
+    .moveimage1 {
+        width: 380px !important;
+        height:500px !important;
+    }
+}

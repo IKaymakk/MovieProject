@@ -19,11 +19,12 @@ namespace MovieProject.Application.Features.MovieGenre.Results
         public string Trailer { get; set; }
         public string HashTag { get; set; }
 
-        public int Score { get; set; }
-        public int Year { get; set; }
-        public int RunTime { get; set; }
-        public int ImbdScore { get; set; }
+        public decimal Score { get; set; }
+        public decimal ImbdScore { get; set; }
 
+        public int RunTime { get; set; }
+
+        public DateTime CreatedDate { get; set; }
         public DateTime ReleaseDate { get; set; }
 
         public List<string> Genres { get; set; } // Tür isimlerini içeren liste

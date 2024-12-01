@@ -23,6 +23,7 @@ namespace MovieProject_Domain.Entities
         public int AppRoleId { get; set; }
 
         public ICollection<FavoriteMovie> FavoriteMovies { get; set; } // Ara tabloya referans
+        public ICollection<Comment> Comments { get; set; } // Ara tabloya referans
 
 
     }

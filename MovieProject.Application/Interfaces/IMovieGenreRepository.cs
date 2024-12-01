@@ -10,5 +10,6 @@ namespace MovieProject.Application.Interfaces
     public interface IMovieGenreRepository : IRepository<MovieGenre>
     {
         Task<List<Movie>> GetAllMoviesWithGenres();
+        Task<List<Movie>> GetTop24Movies();
     }
 }

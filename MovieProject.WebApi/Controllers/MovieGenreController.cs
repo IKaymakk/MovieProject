@@ -3,25 +3,29 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Application.Features.MovieGenre.Queries;
 
-namespace MovieProject.WebApi.Controllers
+namespace MovieProject.WebApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class MovieGenreController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MovieGenreController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public MovieGenreController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
-
-        public MovieGenreController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpGet]
-
-        public async Task<IActionResult> GetAllMoviesWithGenres()
-        {
-            var movies = await _mediator.Send(new GetAllMoviesWithGenresQuery());
-            return Ok(movies);
-        }
+        _mediator = mediator;
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllMoviesWithGenres()
+    {
+        var movies = await _mediator.Send(new GetAllMoviesWithGenresQuery());
+        return Ok(movies);
+    }
+    [HttpGet("Top24Movies")]
+    public async Task<IActionResult> GetTop24Movies()
+{
+    var movies = await _mediator.Send(new GetTop24MoviesQuery());
+    return Ok(movies);
+}
 }

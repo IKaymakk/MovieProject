@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Application.Features.Movie.Commands;
 using MovieProject.Application.Features.Movie.Queries;
+using MovieProject.Application.Features.MovieGenre.Queries;
 
 namespace MovieProject.WebApi.Controllers
 {
@@ -29,6 +30,18 @@ namespace MovieProject.WebApi.Controllers
         {
             var movie = await _mediator.Send(new GetMovieByIdQuery(id));
             return Ok(movie);
+        }
+        [HttpGet("Last24Movies")]
+        public async Task<IActionResult> GetLast24Movies()
+        {
+            var movies = await _mediator.Send(new GetLast15MoviesQuery());
+            return Ok(movies);
+        }
+        [HttpGet("MovieDetails")]
+        public async Task<IActionResult> GetMovieDetails(int id)
+        {
+            var movies = await _mediator.Send(new GetMovieDetailsQuery(id));
+            return Ok(movies);
         }
         [HttpPost]
         public async Task<IActionResult> CreateMovie(CreateMovieCommand command)

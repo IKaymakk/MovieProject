@@ -8,23 +8,22 @@ namespace DTO.UI_Dtos
 {
     public class MovieGenreDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public string Image2 { get; set; }
-        public string Description { get; set; }
-        public string Description2 { get; set; }
-        public string Director { get; set; }
-        public string Writer { get; set; }
-        public string Trailer { get; set; }
-        public string HashTag { get; set; }
-
-        public int Score { get; set; }
-        public int Year { get; set; }
-        public int RunTime { get; set; }
-        public int ImbdScore { get; set; }
-
-        public DateTime ReleaseDate { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string image { get; set; }
+        public string image2 { get; set; }
+        public string description { get; set; }
+        public string description2 { get; set; }
+        public string director { get; set; }
+        public string writer { get; set; }
+        public string trailer { get; set; }
+        public string hashTag { get; set; }
+        public decimal score { get; set; }
+        public int year { get; set; }
+        public int runTime { get; set; }
+        public decimal imbdScore { get; set; }
+        public DateTime releaseDate { get; set; }
+        public DateTime createdDate { get; set; }
 
         public List<string> Genres { get; set; } // Tür isimlerini içeren liste
     }

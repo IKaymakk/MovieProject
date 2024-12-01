@@ -7,17 +7,22 @@
 <head>
     <style>
         .slidermovieimage {
-            width: 300px;
+            width: 350px;
+            height: 500px;
         }
     </style>
 </head>
 <body>
-    <div class="slider sliderv2">
-        <div class="container">
-            <div class="row">
-                <div class="slider-single-item">
-                    @await Component.InvokeAsync("_SliderVC")
-                </div>
+
+    @await Component.InvokeAsync("_SliderVC")
+
+    <div class="movie-items  full-width">
+        <div class="row">
+            <div class="col-md-12">
+
+                @await Component.InvokeAsync("_LastMoviesVC")
+                @await Component.InvokeAsync("_TopMoviesVC")
+
             </div>
         </div>
     </div>

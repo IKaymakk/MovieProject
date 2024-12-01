@@ -1,0 +1,39 @@
+﻿@model List<DTO.UI_Dtos.MovieDto>
+
+<div class="title-hd">
+    <h2>En Son Eklenenler</h2>
+    <a href="#" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
+</div>
+<div class="tabs">
+    <ul class="tab-links">
+        <li class="active"><a href="#tab21-h2">#Recent Movies</a></li>
+
+    </ul>
+    <br />
+    <div class="tab-content">
+        <div id="tab1-h2" class="tab active">
+            <div class="row">
+                <div class="slick-multiItem2">
+                    @foreach (var movie in Model)
+                    {
+                        <div class="slide-it">
+                            <div class="movie-item">
+                                <div class="mv-img">
+                                    <a href="/movie/moviedetails/@movie.id"><img class="moveimage1" src="@movie.image" alt=""></a>
+                                </div>
+                                <div class="hvr-inner">
+                                    <a href="/movie/moviedetails/@movie.id">Filme Git<i class="ion-android-arrow-dropright"></i> </a>
+                                </div>
+                                <div class="title-in">
+                                    <h6><a href="#">@movie.name</a></h6>
+                                    <p><i class="ion-android-star"></i><span>@movie.score.ToString("0.0")</span> /10</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

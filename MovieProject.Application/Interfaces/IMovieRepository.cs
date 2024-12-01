@@ -9,5 +9,7 @@ namespace MovieProject.Application.Interfaces
 {
     public interface IMovieRepository : IRepository<Movie>
     {
+        Task<List<Movie>> GetLast24Movie();
+        Task<Movie> GetMovieDetails(int id);
     }
 }

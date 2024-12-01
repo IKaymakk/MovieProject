@@ -22,6 +22,36 @@ namespace MovieProject.Persistance.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MovieProject_Domain.Entities.Actor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Actors");
+                });
+
             modelBuilder.Entity("MovieProject_Domain.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
@@ -109,6 +139,33 @@ namespace MovieProject.Persistance.Migrations
                     b.ToTable("Blogs");
                 });
 
+            modelBuilder.Entity("MovieProject_Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("MovieProject_Domain.Entities.FavoriteMovie", b =>
                 {
                     b.Property<int>("AppUserId")
@@ -149,6 +206,9 @@ namespace MovieProject.Persistance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -173,8 +233,8 @@ namespace MovieProject.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ImbdScore")
-                        .HasColumnType("int");
+                    b.Property<decimal>("ImbdScore")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -186,8 +246,8 @@ namespace MovieProject.Persistance.Migrations
                     b.Property<int>("RunTime")
                         .HasColumnType("int");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Score")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Trailer")
                         .IsRequired()
@@ -196,9 +256,6 @@ namespace MovieProject.Persistance.Migrations
                     b.Property<string>("Writer")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -223,6 +280,17 @@ namespace MovieProject.Persistance.Migrations
                     b.ToTable("MovieGenres");
                 });
 
+            modelBuilder.Entity("MovieProject_Domain.Entities.Actor", b =>
+                {
+                    b.HasOne("MovieProject_Domain.Entities.Movie", "Movie")
+                        .WithMany("Actors")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movie");
+                });
+
             modelBuilder.Entity("MovieProject_Domain.Entities.AppUser", b =>
                 {
                     b.HasOne("MovieProject_Domain.Entities.AppRole", "AppRole")
@@ -232,6 +300,25 @@ namespace MovieProject.Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("AppRole");
+                });
+
+            modelBuilder.Entity("MovieProject_Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("MovieProject_Domain.Entities.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieProject_Domain.Entities.Movie", "Movie")
+                        .WithMany("Comments")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("MovieProject_Domain.Entities.FavoriteMovie", b =>
@@ -274,6 +361,8 @@ namespace MovieProject.Persistance.Migrations
 
             modelBuilder.Entity("MovieProject_Domain.Entities.AppUser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("FavoriteMovies");
                 });
 
@@ -284,6 +373,10 @@ namespace MovieProject.Persistance.Migrations
 
             modelBuilder.Entity("MovieProject_Domain.Entities.Movie", b =>
                 {
+                    b.Navigation("Actors");
+
+                    b.Navigation("Comments");
+
                     b.Navigation("FavoriteMovies");
 
                     b.Navigation("MovieGenres");

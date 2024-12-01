@@ -48,7 +48,7 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
                 Trailer = movie.Trailer,
                 HashTag = movie.HashTag,
                 Score = movie.Score,
-                Year = movie.Year,
+                CreatedDate = movie.CreatedDate,
                 RunTime = movie.RunTime,
                 ImbdScore = movie.ImbdScore,
                 ReleaseDate = movie.ReleaseDate,

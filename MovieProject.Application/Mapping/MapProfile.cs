@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MovieProject.Application.Features.Actor.Results;
+using MovieProject.Application.Features.Genre.Results;
 using MovieProject.Application.Features.Movie.Commands;
 using MovieProject.Application.Features.Movie.Queries;
 using MovieProject.Application.Features.Movie.Results;
@@ -20,12 +22,15 @@ namespace MovieProject.Application.Mapping
             CreateMap<GetMovieByIdQueryResult, Movie>().ReverseMap();
             CreateMap<UpdateMovieCommand, Movie>().ReverseMap();
             CreateMap<GetAllMoviesQueryResult, Movie>().ReverseMap();
+            CreateMap<GetLast15MoviesQueryResult, Movie>().ReverseMap();
+            CreateMap<GetAllGenresQueryResult, Genre>().ReverseMap();
+            CreateMap<GetMovieActorsQueryResult, Actor>().ReverseMap();
 
 
             CreateMap<Movie, GetAllMoviesWithGenresQueryResult>()
              .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
-
-
+            CreateMap<Movie, GetTop24MoviesQueryResult>()
+             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
         }
     }
 }
