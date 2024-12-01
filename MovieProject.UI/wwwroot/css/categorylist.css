@@ -1,0 +1,60 @@
+﻿/* Genel grid ayarları */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 sütun */
+    gap: 20px; /* Kartlar arası boşluk */
+    padding: 20px; /* Dış çerçeveden boşluk */
+    background-color: #121212; /* Arka plan rengi */
+}
+
+/* Kart stili */
+.movie-card {
+    background-color: #1c1c1c; /* Kart arka planı */
+    border-radius: 10px; /* Köşelerin yuvarlanması */
+    overflow: hidden; /* Taşan içerikleri gizle */
+    box-shadow: 0 4px 8px black; /* Hafif gölge */
+    text-align: center; /* İçeriği ortala */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover animasyonu */
+}
+
+    /* Hover efekti */
+    .movie-card:hover {
+        transform: translateY(-10px); /* Hover'da yukarı kaldır */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Hover'da gölgeyi büyüt */
+    }
+
+    /* Resim ayarları */
+    .movie-card img {
+        width: 100%; /* Kart genişliğini kapla */
+        height: 350px; /* Sabit yükseklik */
+        object-fit: cover; /* Resmi kırp ve uyumlu hale getir */
+    }
+
+.categoryimg img {
+    transition: box-shadow 0.3s ease; /* Gölgeleme için geçiş */
+}
+
+.movie-card:hover .categoryimg img {
+    box-shadow: 0 4px 118px red; /* Resmin etrafına beyaz gölge ekleniyor */
+}
+/* Film bilgisi */
+.movie-info {
+    padding: 5px; /* İçerik boşluğu */
+    color: #fff; /* Yazı rengi */
+}
+
+    .movie-info h6 {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .movie-info a {
+        color: #fff; /* Bağlantı rengi beyaz */
+        text-decoration: none; /* Alt çizgiyi kaldır */
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+        .movie-info a:hover {
+            color: #f39c12; /* Hover'da bağlantı rengi */
+        }

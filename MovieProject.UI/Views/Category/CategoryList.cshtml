@@ -1,0 +1,46 @@
+﻿@model List<DTO.UI_Dtos.GenreDto>
+@{
+    ViewData["Title"] = "CategoryList";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+<link href="~/css/categorylist.css" rel="stylesheet" />
+<body>
+    <div class="hero common-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="hero-ct">
+                        <h1>Tüm Kategorİler</h1>
+                        <ul class="breadcumb">
+                            <li class="active"><a href="#">Anasayfa</a></li>
+                            <li> <span class="ion-ios-arrow-right"></span>Kategori Listesi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="flex-wrap-movielist mv-grid-fw">
+                        <div class="movie-grid">
+                            @foreach (var x in Model)
+                            {
+                                <div class="movie-card">
+                                    <a class="categoryimg" href="/Category/MoviesListByCategory">
+                                    <img src="@x.image" alt="@x.name">
+                                    <div class="movie-info">
+                                        <h6>@x.name</h6>
+                                    </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

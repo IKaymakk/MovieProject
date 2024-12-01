@@ -3,7 +3,25 @@
     Layout = "~/Views/Shared/_UILayout.cshtml";
 }
 
+<style>
+    /* Arama çubuğu kapsayıcı stil */
+    .search-container {
+        width: 100%; /* Genişlik: Sayfanın %80'i */
+        max-width: 1150px; /* Maksimum genişlik */
+        margin: 0 auto; /* Ortalamak için margin */
+        padding: 10px 0; /* Üst ve alt boşluk */
+    }
 
+    /* Arama çubuğu stil */
+    .search-bar {
+        width: 100%; /* Kapsayıcı kadar geniş */
+        padding: 10px;
+        border: 1px solid #ccc; /* Çerçeve */
+        border-radius: 5px; /* Köşeleri yuvarla */
+        font-size: 16px; /* Yazı boyutu */
+    }
+
+</style>
 <body>
     <div class="hero common-hero">
         <div class="container">
@@ -23,9 +41,10 @@
     </div>
     <header>
         <div>
-            <div class="top-search">
-                <input type="text" placeholder="Bir film adı veya seri girin">
+            <div class="search-container top-search">
+                <input type="text" class="search-bar" placeholder="Bir film adı veya seri girin">
             </div>
+
         </div>
     </header>
 
