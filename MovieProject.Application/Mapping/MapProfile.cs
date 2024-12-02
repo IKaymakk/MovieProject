@@ -23,6 +23,7 @@ namespace MovieProject.Application.Mapping
             CreateMap<UpdateMovieCommand, Movie>().ReverseMap();
             CreateMap<GetAllMoviesQueryResult, Movie>().ReverseMap();
             CreateMap<GetLast15MoviesQueryResult, Movie>().ReverseMap();
+            CreateMap<GetMoviesByGenreQueryResult, Movie>().ReverseMap();
             CreateMap<GetAllGenresQueryResult, Genre>().ReverseMap();
             CreateMap<GetMovieActorsQueryResult, Actor>().ReverseMap();
 

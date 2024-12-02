@@ -21,6 +21,7 @@ namespace MovieProject.UI.ViewComponents
             {
                 var jsondata = await response.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<List<MovieDto>>(jsondata);
+                TempData["moviecount2"] = values.Count();
                 return View(values);
             }
             return View();

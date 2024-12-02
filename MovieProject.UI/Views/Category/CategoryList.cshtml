@@ -29,11 +29,11 @@
                             @foreach (var x in Model)
                             {
                                 <div class="movie-card">
-                                    <a class="categoryimg" href="/Category/MoviesListByCategory">
-                                    <img src="@x.image" alt="@x.name">
-                                    <div class="movie-info">
-                                        <h6>@x.name</h6>
-                                    </div>
+                                    <a class="categoryimg" href="/Movie/MovieListByGenre/@x.id">
+                                        <img src="@x.image" alt="@x.name">
+                                        <div class="movie-info">
+                                            <h6>@x.name</h6>
+                                        </div>
                                     </a>
                                 </div>
                             }

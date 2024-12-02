@@ -83,5 +83,9 @@ namespace MovieProject.Persistance.Repositories
                 .ToListAsync();
             return top24movies;
         }
+
+      
+
+
     }
 }

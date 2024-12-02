@@ -15,7 +15,7 @@ namespace MovieProject.UI.Controllers
 
         public async Task<IActionResult> MovieList()
         {
-            return View(); 
+            return View();
         }
         public async Task<IActionResult> MovieDetails(int id)
         {
@@ -25,6 +25,19 @@ namespace MovieProject.UI.Controllers
             {
                 var jsondata = await response.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<MovieDetailDto>(jsondata);
+                return View(values);
+            }
+            return View();
+        }
+        public async Task<IActionResult> MovieListByGenre(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:44358/api/Movie/MoviesByGenre?id={id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = await response.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<MovieListByGenreDto>>(jsondata);
+                ViewBag.moviecount = values.Count();
                 return View(values);
             }
             return View();

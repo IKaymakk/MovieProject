@@ -2,9 +2,8 @@
 .movie-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 sütun */
-    gap: 20px; /* Kartlar arası boşluk */
+    gap: 30px; /* Kartlar arası boşluk */
     padding: 20px; /* Dış çerçeveden boşluk */
-    background-color: #121212; /* Arka plan rengi */
 }
 
 /* Kart stili */

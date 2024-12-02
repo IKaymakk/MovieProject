@@ -11,5 +11,8 @@ namespace MovieProject.Application.Interfaces
     {
         Task<List<Movie>> GetLast24Movie();
         Task<Movie> GetMovieDetails(int id);
+        Task<List<Movie>> GetMoviesByCategory(int id);
+
+
     }
 }

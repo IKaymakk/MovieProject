@@ -43,6 +43,12 @@ namespace MovieProject.WebApi.Controllers
             var movies = await _mediator.Send(new GetMovieDetailsQuery(id));
             return Ok(movies);
         }
+        [HttpGet("MoviesByGenre")]
+        public async Task<IActionResult> GetMoviesByGenre(int id)
+        {
+            var movies = await _mediator.Send(new GetMoviesByGenreQuery(id));
+            return Ok(movies);
+        }
         [HttpPost]
         public async Task<IActionResult> CreateMovie(CreateMovieCommand command)
         {

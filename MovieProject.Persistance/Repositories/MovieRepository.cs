@@ -72,6 +72,23 @@ namespace MovieProject.Persistance.Repositories
             return movie;
         }
 
+
+        public async Task<List<Movie>> GetMoviesByCategory(int id)
+        {
+            var movies = await _context.Movies
+                .AsNoTracking()
+                .Where(x => x.MovieGenres.Any(mg => mg.GenreId == id)) 
+                .Select(x => new Movie
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Image = x.Image 
+                })
+                .ToListAsync();
+
+            return movies;
+        }
+
         public Task RemoveAsync(Movie entity)
         {
             throw new NotImplementedException();

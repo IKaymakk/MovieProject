@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "MovieList";
+﻿@model List<DTO.UI_Dtos.MovieListByGenreDto>
+
+@{
+    ViewData["Title"] = "MovieListByGenre";
     Layout = "~/Views/Shared/_UILayout.cshtml";
 }
 
@@ -52,7 +54,7 @@
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="topbar-filter fw">
-                        <p>Toplamda <span>@TempData["moviecount2"] Film</span> Bulundu</p>
+                        <p>Toplamda <span>@ViewBag.moviecount Film</span> Bulundu</p>
                         <label>Sıralama</label>
                         <select>
                             <option value="popularity">Popularity Descending</option>
@@ -69,8 +71,22 @@
 
                     <div class="flex-wrap-movielist mv-grid-fw">
 
-                       @await Component.InvokeAsync("_MovieListVC")
-                     
+                        <link href="~/css/movelist.css" rel="stylesheet" />
+                        @foreach (var x in Model)
+                        {
+                            <div class="movie-item-style-2 movie-item-style-1">
+                                <img src="@x.image" alt="">
+                                <div class="hvr-inner">
+                                    <a href="/Movie/MovieDetails/@x.id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                </div>
+                                <div class="mv-item-infor">
+                                    <h6><a href="/Movie/MovieDetails/@x.id">@x.name</a></h6>
+                                    <p class="rate"><i class="ion-android-star"></i><span>@x.score.ToString("0.0")</span> /10</p>
+                                </div>
+                            </div>
+
+                        }
+
                     </div>
                     <div class="topbar-filter">
                         <label>Movies per page:</label>
