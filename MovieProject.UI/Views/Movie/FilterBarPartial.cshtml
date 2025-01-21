@@ -1,0 +1,39 @@
+﻿<select name="sortBy" id="filterbar">
+    <option value="NameAsc">A ~ Z</option>
+    <option value="NameDesc">Z ~ A</option>
+    <option value="ScoreDesc">Puana Göre Azalan</option>
+    <option value="ScoreAsc">Puana Göre Artan</option>
+    <option value="ReleaseDateDesc">Yeniden Eskiye</option>
+    <option value="ReleaseDateAsc">Eskien Yeniye</option>
+</select>
+
+<script>
+    $(document).ready(function () {
+
+        // Dropdown değiştiğinde filtre uygula
+        $("#filterbar").change(function () {
+            applyFilters();
+        });
+
+        // Filtreleme işlevi
+        function applyFilters() {
+            var sortBy = $("#filterbar").val(); // Seçilen sıralama türünü al
+
+            $.ajax({
+                url: '/Movie/FilteredMovieList',
+                type: 'GET',
+                data: {
+                    sortBy: sortBy // Backend'e gönderilecek parametre
+                },
+                success: function (data) {
+                    // Yeni içerik ile film listesini güncelle
+                    $('.xd').html('');
+                    $('.xd').html(data);
+                },
+                error: function () {
+                    alert('Bir Hata Oluştu. Lütfen Tekrar Deneyiniz.');
+                }
+            });
+        }
+    });
+</script>

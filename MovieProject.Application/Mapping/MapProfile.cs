@@ -18,20 +18,30 @@ namespace MovieProject.Application.Mapping
     {
         public MapProfile()
         {
+
+            #region Movie
+            CreateMap<Movie, GetAllMoviesWithGenresQueryResult>()
+            .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
+            CreateMap<Movie, GetTop24MoviesQueryResult>()
+            .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
             CreateMap<CreateMovieCommand, Movie>().ReverseMap();
             CreateMap<GetMovieByIdQueryResult, Movie>().ReverseMap();
             CreateMap<UpdateMovieCommand, Movie>().ReverseMap();
             CreateMap<GetAllMoviesQueryResult, Movie>().ReverseMap();
             CreateMap<GetLast15MoviesQueryResult, Movie>().ReverseMap();
             CreateMap<GetMoviesByGenreQueryResult, Movie>().ReverseMap();
+            CreateMap<GetMoviesByFilterQueryResult, Movie>().ReverseMap();
+            #endregion
+
+            #region Genre
             CreateMap<GetAllGenresQueryResult, Genre>().ReverseMap();
+            #endregion
+
+            #region Actor
             CreateMap<GetMovieActorsQueryResult, Actor>().ReverseMap();
+            #endregion
 
 
-            CreateMap<Movie, GetAllMoviesWithGenresQueryResult>()
-             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
-            CreateMap<Movie, GetTop24MoviesQueryResult>()
-             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
         }
     }
 }

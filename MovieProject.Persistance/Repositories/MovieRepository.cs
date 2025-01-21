@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieProject.Application.DTOS;
 using MovieProject.Application.Features.Movie.Queries;
 using MovieProject.Application.Interfaces;
 using MovieProject.Persistance.Context;
@@ -51,6 +52,84 @@ namespace MovieProject.Persistance.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<List<Movie>> GetFilterMoviesList(FilterListDto options)
+        {
+            var query = _context.Movies
+                .AsNoTracking()
+                .Include(x => x.MovieGenres)
+                .ThenInclude(x => x.Genre)
+                .OrderByDescending(x => x.Id)
+                  .Select(x => new Movie
+                  {
+                      Id = x.Id,
+                      Name = x.Name,
+                      Image = x.Image,
+                      Score = x.Score,
+                      ReleaseDate = x.ReleaseDate
+                  });
+
+            // Sıralama
+            if (!string.IsNullOrEmpty(options.SortBy))
+            {
+                query = options.SortBy switch
+                {
+                    "NameAsc" => query.OrderBy(x => x.Name),
+                    "NameDesc" => query.OrderByDescending(x => x.Name),
+                    "ScoreAsc" => query.OrderBy(x => x.Score),
+                    "ScoreDesc" => query.OrderByDescending(x => x.Score),
+                    "ReleaseDateAsc" => query.OrderBy(x => x.ReleaseDate),
+                    "ReleaseDateDesc" => query.OrderByDescending(x => x.ReleaseDate),
+                    _ => query // Default sıralama yok
+                };
+            }
+            return await query.ToListAsync();
+        }
+
+        public async Task<(List<Movie>, int)> GetFilterMoviesListWithCount(FilterListDto options)
+        {
+            var query = _context.Movies
+                .AsNoTracking()
+                .Include(x => x.MovieGenres)
+                .ThenInclude(x => x.Genre)
+                .Select(x => new Movie
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Image = x.Image,
+                    Score = x.Score,
+                    ReleaseDate = x.ReleaseDate
+                });
+
+            // Sıralama
+            if (!string.IsNullOrEmpty(options.SortBy))
+            {
+                query = options.SortBy switch
+                {
+                    "NameAsc" => query.OrderBy(x => x.Name),
+                    "NameDesc" => query.OrderByDescending(x => x.Name),
+                    "ScoreAsc" => query.OrderBy(x => x.Score),
+                    "ScoreDesc" => query.OrderByDescending(x => x.Score),
+                    "ReleaseDateAsc" => query.OrderBy(x => x.ReleaseDate),
+                    "ReleaseDateDesc" => query.OrderByDescending(x => x.ReleaseDate),
+                    _ => query
+                };
+            }
+
+            // Toplam kayıt sayısı
+            var totalCount = await query.CountAsync();
+
+            // Sayfalama
+            if (options.Page > 0 && options.PageSize > 0)
+            {
+                var skip = (options.Page - 1) * options.PageSize;
+                query = query.Skip(skip).Take(options.PageSize);
+            }
+
+            var movies = await query.ToListAsync();
+            return (movies, totalCount);
+        }
+
+
         public async Task<List<Movie>> GetLast24Movie()
         {
             var movies = await _context.Movies
@@ -77,12 +156,13 @@ namespace MovieProject.Persistance.Repositories
         {
             var movies = await _context.Movies
                 .AsNoTracking()
-                .Where(x => x.MovieGenres.Any(mg => mg.GenreId == id)) 
+                .Where(x => x.MovieGenres.Any(mg => mg.GenreId == id))
                 .Select(x => new Movie
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Image = x.Image 
+                    Image = x.Image,
+                    Score = x.Score
                 })
                 .ToListAsync();
 
@@ -100,3 +180,25 @@ namespace MovieProject.Persistance.Repositories
         }
     }
 }
+
+
+//// Filtreleme
+//if (options.GenreId != null)
+//{
+//    query = query.Where(x => x.MovieGenres.Any(mg => mg.GenreId == options.GenreId));
+//}
+
+//if (!string.IsNullOrEmpty(options.Name))
+//{
+//    query = query.Where(x => x.Name.Contains(options.Name));
+//}
+
+//if (options.Score != null)
+//{
+//    query = query.Where(x => x.Score == options.Score);
+//}
+
+//if (options.ReleaseDate != null)
+//{
+//    query = query.Where(x => x.ReleaseDate == options.ReleaseDate);
+//}

@@ -1,4 +1,5 @@
-﻿using MovieProject_Domain.Entities;
+﻿using MovieProject.Application.DTOS;
+using MovieProject_Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace MovieProject.Application.Interfaces
         Task<List<Movie>> GetLast24Movie();
         Task<Movie> GetMovieDetails(int id);
         Task<List<Movie>> GetMoviesByCategory(int id);
+        Task<List<Movie>> GetFilterMoviesList(FilterListDto options);
+        Task<(List<Movie>, int)> GetFilterMoviesListWithCount(FilterListDto options);
 
 
     }

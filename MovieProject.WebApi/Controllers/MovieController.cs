@@ -19,6 +19,8 @@ namespace MovieProject.WebApi.Controllers
             _mediator = mediator;
         }
 
+
+        #region HttpGet
         [HttpGet]
         public async Task<IActionResult> MoviesList()
         {
@@ -49,24 +51,51 @@ namespace MovieProject.WebApi.Controllers
             var movies = await _mediator.Send(new GetMoviesByGenreQuery(id));
             return Ok(movies);
         }
+        [HttpGet("MoviesByFilter")]
+        public async Task<IActionResult> GetMoviesByFilter(string? sortBy, int page = 1, int pageSize = 10)
+        {
+            // Sayfa numarası ve boyutu varsayılan değerlerle kullanılabilir.
+            var query = new GetMoviesByFilterQuery
+            {
+                SortBy = sortBy,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            var movies = await _mediator.Send(query);
+            return Ok(movies);
+        }
+        #endregion
+
+        #region HttpPost
         [HttpPost]
         public async Task<IActionResult> CreateMovie(CreateMovieCommand command)
         {
             await _mediator.Send(command);
             return Ok("Film Eklendi");
         }
+        #endregion
+
+        #region HttpPut
         [HttpPut]
         public async Task<IActionResult> UpdateMovie(UpdateMovieCommand command)
         {
             await _mediator.Send(command);
             return Ok("Film Güncellendi");
         }
+
+        #endregion
+
+        #region HttpDelete
         [HttpDelete]
         public async Task<IActionResult> DeleteMovie(int id)
         {
             await _mediator.Send(new DeleteMovieCommand(id));
             return Ok("Film Silindi");
         }
+        #endregion
+
+
 
     }
 }

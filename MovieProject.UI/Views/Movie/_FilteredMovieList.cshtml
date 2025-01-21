@@ -1,0 +1,18 @@
+﻿@model List<DTO.UI_Dtos.MovieDto>
+<div class="flex-wrap-movielist mv-grid-fw">
+
+    @foreach (var x in Model)
+    {
+
+        <div class="movie-item-style-2 movie-item-style-1">
+            <img src="@x.image" alt="">
+            <div class="hvr-inner">
+                <a href="/Movie/MovieDetails/@x.id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+            </div>
+            <div class="mv-item-infor">
+                <h6><a href="/Movie/MovieDetails/@x.id">@x.name</a></h6>
+                <p class="rate"><i class="ion-android-star"></i><span>@x.score.ToString("0.0")</span> /10</p>
+            </div>
+        </div>
+    }
+</div>
