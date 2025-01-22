@@ -14,33 +14,45 @@ namespace MovieProject.UI.Controllers
         }
 
 
-        public async Task<IActionResult> MovieList(string? SortBy)
+        public async Task<IActionResult> MovieList(string? SortBy, int Page = 1, int PageSize = 18)
         {
             var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync($"https://localhost:44358/api/Movie/MoviesByFilter?sortBy={SortBy}");
+            var response = await client.GetAsync($"https://localhost:44358/api/Movie/MoviesByFilter?sortBy={SortBy}&page={Page}&pageSize={PageSize}");
+
             if (response.IsSuccessStatusCode)
             {
                 var jsondata = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<MovieDto>>(jsondata);
-                return View(values);
+                var paginatedMovies = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
+
+                // PaginatedMovieDto modelini view'e gönder
+                return View(paginatedMovies);
             }
-            return View();
+
+            // Başarısız durumda boş model döndür
+            return View(new PaginatedMovieDto());
         }
 
+
+
         [HttpGet]
-        public async Task<IActionResult> FilteredMovieList(string? SortyBy)
+        public async Task<IActionResult> FilteredMovieList(string? SortBy, int Page = 1, int PageSize = 18)
         {
             var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync($"https://localhost:44358/api/Movie/MoviesByFilter?sortBy={SortyBy}");
+            var response = await client.GetAsync($"https://localhost:44358/api/Movie/MoviesByFilter?sortBy={SortBy}&page={Page}&pageSize={PageSize}");
+
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<MovieDto>>(jsonData);
+                var paginatedMovies = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsonData);
 
-                return PartialView("_FilteredMovieList", values); 
+                return PartialView("_FilteredMovieList", paginatedMovies);
             }
+
             return BadRequest();
         }
+
+
+
         public async Task<IActionResult> MovieDetails(int id)
         {
             var client = _httpClientFactory.CreateClient();

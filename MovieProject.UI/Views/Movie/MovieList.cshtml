@@ -1,4 +1,4 @@
-﻿@model List<DTO.UI_Dtos.MovieDto>
+﻿@model DTO.UI_Dtos.PaginatedMovieDto
 @{
     ViewData["Title"] = "MovieList";
     Layout = "~/Views/Shared/_UILayout.cshtml";
@@ -24,6 +24,7 @@
     }
 
 </style>
+
 <body>
     <div class="hero common-hero">
         <div class="container">
@@ -65,16 +66,16 @@
                     <div class="xd">
                         <div class="flex-wrap-movielist mv-grid-fw">
                             <!----------------------------FilmListesi--------------------------------->
-                            @foreach (var x in Model)
+                            @foreach (var x in Model.Movies)
                             {
                                 <div class="movie-item-style-2 movie-item-style-1">
-                                    <img src="@x.image" alt="">
+                                    <img src="@x.Image" alt="">
                                     <div class="hvr-inner">
-                                        <a href="/Movie/MovieDetails/@x.id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                        <a href="/Movie/MovieDetails/@x.Id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
                                     </div>
                                     <div class="mv-item-infor">
-                                        <h6><a href="/Movie/MovieDetails/@x.id">@x.name</a></h6>
-                                        <p class="rate"><i class="ion-android-star"></i><span>@x.score.ToString("0.0")</span> /10</p>
+                                        <h6><a href="/Movie/MovieDetails/@x.Id">@x.Name</a></h6>
+                                        <p class="rate"><i class="ion-android-star"></i><span>@x.Score.ToString("0.0")</span> /10</p>
                                     </div>
                                 </div>
                             }
@@ -82,22 +83,33 @@
                         </div>
                     </div>
 
+
+
+
+                    <div class="pagination">
+                       
+                    </div>
+
+
+
                     <div class="topbar-filter">
                         <label>Movies per page:</label>
                         <select>
                             <option value="range">20 Movies</option>
                             <option value="saab">10 Movies</option>
                         </select>
+
+
                         <div class="pagination2">
-                            <span>Page 1 of 2:</span>
-                            <a class="active" href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">...</a>
-                            <a href="#">78</a>
-                            <a href="#">79</a>
-                            <a href="#"><i class="ion-arrow-right-b"></i></a>
+
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <a href="#" class="@(i == Model.CurrentPage ? " " : "")" data-page="@i">@i</a>
+                            }
+
+                          
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -108,7 +120,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-<script>
+@* <script>
     $(document).ready(function () {
         $('#filterbar').change(function () {
             var selectedValue = $(this).val();
@@ -127,5 +139,40 @@
             });
         });
     });
+</script> *@
+
+<script>
+    $(document).ready(function () {
+        function loadMovies(sortBy, page) {
+            $.ajax({
+                url: '/Movie/FilteredMovieList',
+                type: 'GET',
+                data: { SortBy: sortBy, Page: page },
+                success: function (result) {
+                    // Dönen HTML'i div içerisine yerleştir
+                    $('.xd').html('');
+                    $('.xd').html(result);
+                },
+                error: function () {
+                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
+                }
+            });
+        }
+
+        // Sıralama değiştiğinde film listesini yükle
+        $('#filterbar').change(function () {
+            var selectedValue = $(this).val();
+            loadMovies(selectedValue, 1); // İlk sayfadan başla
+        });
+
+        // Sayfa butonlarına tıklandığında film listesini yükle
+        $(document).on('click', '.pagination2 a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            var sortBy = $('#filterbar').val();
+            loadMovies(sortBy, page);
+        });
+    });
 </script>
+
 

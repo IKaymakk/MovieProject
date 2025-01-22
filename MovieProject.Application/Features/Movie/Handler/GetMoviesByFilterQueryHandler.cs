@@ -32,13 +32,19 @@ public class GetMoviesByFilterQueryHandler : IRequestHandler<GetMoviesByFilterQu
             PageSize = request.PageSize
         };
 
+        // Repo'dan veri ve toplam kayıt sayısını al
         var (movies, totalCount) = await _repository.GetFilterMoviesListWithCount(options);
         var mappedMovies = _mapper.Map<List<GetMoviesByFilterQueryResult>>(movies);
+
+        // Toplam sayfa sayısını hesapla
+        var totalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize);
 
         return new PaginatedMovieResult
         {
             Movies = mappedMovies,
-            TotalCount = totalCount
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = request.Page
         };
     }
 }

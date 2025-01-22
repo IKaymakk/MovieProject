@@ -19,7 +19,7 @@ public class _TopMoviesVC : ViewComponent
         if (response.IsSuccessStatusCode)
         {
             var jsondata = await response.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<MovieDto>>(jsondata);
+            var values = JsonConvert.DeserializeObject<List<Movie2Dto>>(jsondata);
             return View(values);
         }
         return View();

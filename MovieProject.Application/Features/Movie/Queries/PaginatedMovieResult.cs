@@ -9,10 +9,9 @@ namespace MovieProject.Application.Features.Movie.Queries;
 
 public class PaginatedMovieResult
 {
-    public List<GetMoviesByFilterQueryResult> Movies { get; set; } = new List<GetMoviesByFilterQueryResult>();
-    public int CurrentPage { get; set; }
-    public int PageSize { get; set; }
-    public int TotalPages { get; set; }
-    public int TotalRecords { get; set; }
+    public List<GetMoviesByFilterQueryResult> Movies { get; set; } = new();
+    public int TotalCount { get; set; } // Toplam kayıt sayısı
+    public int TotalPages { get; set; } // Toplam sayfa sayısı
+    public int CurrentPage { get; set; } // Mevcut sayfa
 }
 
