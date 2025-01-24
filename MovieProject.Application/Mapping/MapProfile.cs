@@ -4,6 +4,7 @@ using MovieProject.Application.Features.Genre.Results;
 using MovieProject.Application.Features.Movie.Commands;
 using MovieProject.Application.Features.Movie.Queries;
 using MovieProject.Application.Features.Movie.Results;
+using MovieProject.Application.Features.MovieGenre.Commands;
 using MovieProject.Application.Features.MovieGenre.Results;
 using MovieProject_Domain.Entities;
 using System;
@@ -41,7 +42,11 @@ namespace MovieProject.Application.Mapping
             CreateMap<GetMovieActorsQueryResult, Actor>().ReverseMap();
             #endregion
 
+            #region MovieGenre
 
+            CreateMap<MovieGenre, AddGenresToMoviesCommand>().ReverseMap();
+
+            #endregion
         }
     }
 }

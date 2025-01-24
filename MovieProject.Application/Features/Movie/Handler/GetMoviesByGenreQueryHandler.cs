@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using MovieProject.Application.DTOS;
 using MovieProject.Application.Features.Movie.Queries;
 using MovieProject.Application.Features.Movie.Results;
 using MovieProject.Application.Interfaces;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MovieProject.Application.Features.Movie.Handler
 {
-    public class GetMoviesByGenreQueryHandler : IRequestHandler<GetMoviesByGenreQuery, List<GetMoviesByGenreQueryResult>>
+    public class GetMoviesByGenreQueryHandler : IRequestHandler<GetMoviesByGenreQuery, PaginatedMovieResult>
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
@@ -22,11 +23,29 @@ namespace MovieProject.Application.Features.Movie.Handler
             _mapper = mapper;
         }
 
-        public async Task<List<GetMoviesByGenreQueryResult>> Handle(GetMoviesByGenreQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedMovieResult> Handle(GetMoviesByGenreQuery request, CancellationToken cancellationToken)
         {
-            var values = await _movieRepository.GetMoviesByCategory(request.id);
-            var mappedvalues = _mapper.Map<List<GetMoviesByGenreQueryResult>>(values);
-            return mappedvalues;
+            var options = new FilterListDto
+            {
+                SortBy = request.SortBy,
+                Page = request.Page,
+                PageSize = request.PageSize
+            };
+
+            var (values, totalcount) = await _movieRepository.GetMoviesByCategoryWithPaging(options, request.id);
+
+            var mappedvalues = _mapper.Map<List<GetMoviesByFilterQueryResult>>(values);
+
+            var totalPages = (int)Math.Ceiling(totalcount / (double)request.PageSize);
+
+            return new PaginatedMovieResult
+            {
+                id = request.id,
+                Movies = mappedvalues,
+                TotalCount = totalcount,
+                TotalPages = totalPages,
+                CurrentPage = request.Page
+            };
         }
     }
 }

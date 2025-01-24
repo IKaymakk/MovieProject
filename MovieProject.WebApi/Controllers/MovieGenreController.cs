@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieProject.Application.Features.MovieGenre.Commands;
 using MovieProject.Application.Features.MovieGenre.Queries;
 
 namespace MovieProject.WebApi.Controllers;
@@ -16,6 +17,7 @@ public class MovieGenreController : ControllerBase
         _mediator = mediator;
     }
 
+    #region HttpGet
     [HttpGet]
     public async Task<IActionResult> GetAllMoviesWithGenres()
     {
@@ -24,8 +26,26 @@ public class MovieGenreController : ControllerBase
     }
     [HttpGet("Top24Movies")]
     public async Task<IActionResult> GetTop24Movies()
-{
-    var movies = await _mediator.Send(new GetTop24MoviesQuery());
-    return Ok(movies);
-}
+    {
+        var movies = await _mediator.Send(new GetTop24MoviesQuery());
+        return Ok(movies);
+    }
+    #endregion
+
+    #region HttpPost
+    [HttpPost("AddGenresToMovie")]
+    public async Task<IActionResult> AddGenresToMovie(AddGenresToMoviesCommand command)
+    {
+        await _mediator.Send(command);
+        return Ok("Başarılı Bir Şekilde Filme Tür Eklendi.");
+    }
+    #endregion
+
+
+    #region HttpPut
+    #endregion
+
+
+    #region HttpDelete
+    #endregion
 }

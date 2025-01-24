@@ -1,4 +1,4 @@
-﻿@model List<DTO.UI_Dtos.MovieListByGenreDto>
+﻿@model DTO.UI_Dtos.PaginatedMovieDto
 
 @{
     ViewData["Title"] = "MovieListByGenre";
@@ -24,6 +24,8 @@
     }
 
 </style>
+
+
 <body>
     <div class="hero common-hero">
         <div class="container">
@@ -53,40 +55,34 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
+
+
                     <div class="topbar-filter fw">
                         <p>Toplamda <span>@ViewBag.moviecount Film</span> Bulundu</p>
                         <label>Sıralama</label>
-                        <select>
-                            <option value="popularity">Popularity Descending</option>
-                            <option value="popularity">Popularity Ascending</option>
-                            <option value="rating">Rating Descending</option>
-                            <option value="rating">Rating Ascending</option>
-                            <option value="date">Release date Descending</option>
-                            <option value="date">Release date Ascending</option>
-                        </select>
+                        <partial name="~/Views/Movie/FilterBarPartial.cshtml" />
                         <a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
                         <a href="moviegridfw.html" class="grid"><i class="ion-grid active"></i></a>
                     </div>
 
-
-                    <div class="flex-wrap-movielist mv-grid-fw">
-
-                        <link href="~/css/movelist.css" rel="stylesheet" />
-                        @foreach (var x in Model)
-                        {
-                            <div class="movie-item-style-2 movie-item-style-1">
-                                <img src="@x.image" alt="">
-                                <div class="hvr-inner">
-                                    <a href="/Movie/MovieDetails/@x.id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                    <div class="xd">
+                        <div class="flex-wrap-movielist mv-grid-fw">
+                            <link href="~/css/movelist.css" rel="stylesheet" />
+                            @foreach (var x in Model.Movies)
+                            {
+                                <div class="movie-item-style-2 movie-item-style-1">
+                                    <img src="@x.Image" alt="">
+                                    <div class="hvr-inner">
+                                        <a href="/Movie/MovieDetails/@x.Id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                    </div>
+                                    <div class="mv-item-infor">
+                                        <h6><a href="/Movie/MovieDetails/@x.Id">@x.Name</a></h6>
+                                        <p class="rate"><i class="ion-android-star"></i><span>@x.Score.ToString("0.0")</span> /10</p>
+                                    </div>
                                 </div>
-                                <div class="mv-item-infor">
-                                    <h6><a href="/Movie/MovieDetails/@x.id">@x.name</a></h6>
-                                    <p class="rate"><i class="ion-android-star"></i><span>@x.score.ToString("0.0")</span> /10</p>
-                                </div>
-                            </div>
 
-                        }
-
+                            }
+                        </div>
                     </div>
                     <div class="topbar-filter">
                         <label>Movies per page:</label>
@@ -95,15 +91,13 @@
                             <option value="saab">10 Movies</option>
                         </select>
 
+
                         <div class="pagination2">
-                            <span>Page 1 of 2:</span>
-                            <a class="active" href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">...</a>
-                            <a href="#">78</a>
-                            <a href="#">79</a>
-                            <a href="#"><i class="ion-arrow-right-b"></i></a>
+
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <a href="#" class="@(i == Model.CurrentPage ? " " : "")" data-page="@i">@i</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -113,3 +107,40 @@
 
 </body>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function loadMovies(sortBy, page, id) {
+            $.ajax({
+                url: '/Movie/MovieListByGenreSortBy',
+                type: 'GET',
+                data: { sortBy: sortBy, page: page, id: id },
+                success: function (movieList) {
+                    $('.xd').html('');
+                    $('.xd').html(movieList);
+                },
+                error: function () {
+                    alert('Bir Hata Oluştu!!!');
+                }
+            });
+        }
+
+
+        $('#filterbar').change(function () {
+            var selectedValue = $(this).val();
+            var id = $('#filterbar').data('category-id'); // id'yi saklayıp buradan alabilirsiniz
+            loadMovies(selectedValue, 1, id);
+        });
+
+
+        $(document).on('click', '.pagination2 a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            var sortBy = $('#filterbar').val();
+            var id = $('#filterbar').data('category-id'); // id'yi buradan al
+            loadMovies(sortBy, page, id);
+        });
+
+    });
+</script>

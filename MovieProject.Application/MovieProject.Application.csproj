@@ -16,8 +16,4 @@
     <ProjectReference Include="..\MovieProject_Domain\MovieProject_Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Genre\Commands\" />
-  </ItemGroup>
-
 </Project>

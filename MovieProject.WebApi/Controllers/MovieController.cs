@@ -46,13 +46,20 @@ namespace MovieProject.WebApi.Controllers
             return Ok(movies);
         }
         [HttpGet("MoviesByGenre")]
-        public async Task<IActionResult> GetMoviesByGenre(int id)
+        public async Task<IActionResult> GetMoviesByGenre(int id, string? sortBy, int page = 1, int pageSize = 18)
         {
-            var movies = await _mediator.Send(new GetMoviesByGenreQuery(id));
+            var options = new GetMoviesByGenreQuery
+            {
+                SortBy = sortBy,
+                Page = page,
+                PageSize = pageSize,
+                id = id
+            };
+            var movies = await _mediator.Send(options);
             return Ok(movies);
         }
         [HttpGet("MoviesByFilter")]
-        public async Task<IActionResult> GetMoviesByFilter(string? sortBy, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetMoviesByFilter(string? sortBy, int page = 1, int pageSize = 18)
         {
             // Sayfa numarası ve boyutu varsayılan değerlerle kullanılabilir.
             var query = new GetMoviesByFilterQuery

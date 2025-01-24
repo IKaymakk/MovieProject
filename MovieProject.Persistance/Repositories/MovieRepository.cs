@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MovieProject.Persistance.Repositories
 {
@@ -129,6 +130,51 @@ namespace MovieProject.Persistance.Repositories
             return (movies, totalCount);
         }
 
+        public async Task<(List<Movie>, int)> GetMoviesByCategoryWithPaging(FilterListDto options, int id)
+        {
+            // İlk sorgu
+            var query = _context.Movies
+                            .AsNoTracking()
+                            .Where(x => x.MovieGenres.Any(mg => mg.GenreId == id))
+                            .Select(x => new Movie
+                            {
+                                Id = x.Id,
+                                Name = x.Name,
+                                Image = x.Image,
+                                Score = x.Score,
+                                ReleaseDate = x.ReleaseDate
+                            });
+
+            // Sıralama işlemi
+            if (!string.IsNullOrEmpty(options.SortBy))
+            {
+                query = options.SortBy switch
+                {
+                    "NameAsc" => query.OrderBy(x => x.Name),
+                    "NameDesc" => query.OrderByDescending(x => x.Name),
+                    "ScoreAsc" => query.OrderBy(x => x.Score),
+                    "ScoreDesc" => query.OrderByDescending(x => x.Score),
+                    "ReleaseDateAsc" => query.OrderBy(x => x.ReleaseDate),
+                    "ReleaseDateDesc" => query.OrderByDescending(x => x.ReleaseDate),
+                    _ => query
+                };
+            }
+
+            // Geri dönüş
+            var totalCount = await query.CountAsync(); // Sorgu burada çalıştırılır.
+
+            // Sayfalama
+            if (options.Page > 0 && options.PageSize > 0)
+            {
+                var skip = (options.Page - 1) * options.PageSize;
+                query = query.Skip(skip).Take(options.PageSize); // Skip ve Take uygulanır.
+            }
+
+            var movies = await query.ToListAsync(); // Sorgu burada tamamlanır.
+            return (movies, totalCount);
+
+        }
+
 
         public async Task<List<Movie>> GetLast24Movie()
         {
@@ -168,6 +214,7 @@ namespace MovieProject.Persistance.Repositories
 
             return movies;
         }
+
 
         public Task RemoveAsync(Movie entity)
         {
