@@ -51,6 +51,7 @@ namespace MovieProject.UI.Controllers
 
         public async Task<IActionResult> MovieDetails(int id)
         {
+            ViewBag.MovieId = id;
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:44358/api/Movie/MovieDetails?id={id}");
             if (response.IsSuccessStatusCode)
@@ -86,12 +87,11 @@ namespace MovieProject.UI.Controllers
             {
                 var jsondata = await response.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
-                ViewBag.moviecount = values.Movies.Count();
-                ViewBag.categoryId = id; // id'yi tekrar View'e gönderin
-                return PartialView("_FilteredMovieList", values);
+                return Json(values); // JSON verisi döndürülüyor
             }
-            return View();
+            return BadRequest("Film listesi alınamadı.");
         }
+
 
     }
 }

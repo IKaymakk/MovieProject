@@ -83,15 +83,6 @@
                         </div>
                     </div>
 
-
-
-
-                    <div class="pagination">
-                       
-                    </div>
-
-
-
                     <div class="topbar-filter">
                         <label>Movies per page:</label>
                         <select>
@@ -99,15 +90,11 @@
                             <option value="saab">10 Movies</option>
                         </select>
 
-
                         <div class="pagination2">
-
                             @for (int i = 1; i <= Model.TotalPages; i++)
                             {
                                 <a href="#" class="@(i == Model.CurrentPage ? " " : "")" data-page="@i">@i</a>
                             }
-
-                          
                         </div>
 
                     </div>

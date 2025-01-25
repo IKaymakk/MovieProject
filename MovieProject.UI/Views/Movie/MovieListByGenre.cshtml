@@ -25,7 +25,7 @@
 
 </style>
 
-
+<link href="~/css/movelist.css" rel="stylesheet" />
 <body>
     <div class="hero common-hero">
         <div class="container">
@@ -68,6 +68,8 @@
                     <div class="xd">
                         <div class="flex-wrap-movielist mv-grid-fw">
                             <link href="~/css/movelist.css" rel="stylesheet" />
+
+
                             @foreach (var x in Model.Movies)
                             {
                                 <div class="movie-item-style-2 movie-item-style-1">
@@ -116,12 +118,28 @@
                 url: '/Movie/MovieListByGenreSortBy',
                 type: 'GET',
                 data: { sortBy: sortBy, page: page, id: id },
-                success: function (movieList) {
-                    $('.xd').html('');
-                    $('.xd').html(movieList);
+                success: function (data) {
+
+                    var movieList = $(".flex-wrap-movielist");
+                    movieList.html(""); // Mevcut listeyi temizle
+
+                    data.movies.forEach(function (movie) {
+                        var movieItem = `
+                                <div class="movie-item-style-2 movie-item-style-1">
+                                    <img src="${movie.image}" alt="">
+                                    <div class="hvr-inner">
+                                        <a href="/Movie/MovieDetails/${movie.id}"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                    </div>
+                                    <div class="mv-item-infor">
+                                        <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                        <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                    </div>
+                                </div>`;
+                        movieList.append(movieItem); // Oluşturulan öğeyi ekle
+                    });
                 },
                 error: function () {
-                    alert('Bir Hata Oluştu!!!');
+                    alert("Bir hata oluştu, lütfen tekrar deneyin.");
                 }
             });
         }

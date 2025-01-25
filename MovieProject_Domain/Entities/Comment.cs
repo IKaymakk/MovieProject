@@ -14,5 +14,6 @@ namespace MovieProject_Domain.Entities
         public virtual AppUser AppUser { get; set; }
         public int MovieId { get; set; }
         public int AppUserId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
