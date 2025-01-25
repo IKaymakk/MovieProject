@@ -16,7 +16,6 @@ namespace MovieProject.Application.Interfaces
         Task<(List<Movie>, int)> GetMoviesByCategoryWithPaging(FilterListDto options, int id);
         Task<List<Movie>> GetFilterMoviesList(FilterListDto options);
         Task<(List<Movie>, int)> GetFilterMoviesListWithCount(FilterListDto options);
-
-
+        Task<List<Movie>> GetSimilarMovies(string Hashtag);
     }
 }

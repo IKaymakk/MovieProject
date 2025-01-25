@@ -225,6 +225,18 @@ namespace MovieProject.Persistance.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<Movie>> GetSimilarMovies(string Hashtag)
+        {
+            var movies = await _context.Movies
+                .AsNoTracking()
+                .Where(x => x.HashTag == Hashtag)
+                .OrderByDescending(x => x.Score)
+                .Take(10)
+                .ToListAsync();
+
+            return movies;
+        }
     }
 }
 

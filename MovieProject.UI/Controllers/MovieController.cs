@@ -23,7 +23,7 @@ namespace MovieProject.UI.Controllers
             {
                 var jsondata = await response.Content.ReadAsStringAsync();
                 var paginatedMovies = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
-
+                TempData["moviecount2"] = paginatedMovies.Movies.Count();
                 // PaginatedMovieDto modelini view'e gönder
                 return View(paginatedMovies);
             }

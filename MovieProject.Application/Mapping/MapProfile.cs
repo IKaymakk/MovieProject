@@ -33,6 +33,7 @@ namespace MovieProject.Application.Mapping
             CreateMap<GetLast15MoviesQueryResult, Movie>().ReverseMap();
             CreateMap<GetMoviesByGenreQueryResult, Movie>().ReverseMap();
             CreateMap<GetMoviesByFilterQueryResult, Movie>().ReverseMap();
+            CreateMap<GetSimilarMoviesQueryResult, Movie>().ReverseMap();
             #endregion
 
             #region Genre

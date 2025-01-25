@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Application.Features.Movie.Commands;
 using MovieProject.Application.Features.Movie.Queries;
+using MovieProject.Application.Features.Movie.Results;
 using MovieProject.Application.Features.MovieGenre.Queries;
 
 namespace MovieProject.WebApi.Controllers
@@ -72,6 +73,15 @@ namespace MovieProject.WebApi.Controllers
             var movies = await _mediator.Send(query);
             return Ok(movies);
         }
+
+        [HttpGet("GetSimiilarMovies")]
+        public async Task<IActionResult> GetSimilarMovies(string Hashtag)
+        {
+            var similarMovies = await _mediator.Send(new GetSimilarMoviesQuery(Hashtag));
+            return Ok(similarMovies);
+        }
+
+
         #endregion
 
         #region HttpPost
