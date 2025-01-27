@@ -73,6 +73,21 @@ namespace MovieProject.WebApi.Controllers
             var movies = await _mediator.Send(query);
             return Ok(movies);
         }
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string? searchTerm, [FromQuery] string? sortBy, [FromQuery] int page = 1, [FromQuery] int pageSize = 18)
+        {
+            var query = new SearchMoviesQuery
+            {
+                SearchTerm = searchTerm,
+                SortBy = sortBy,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
 
         [HttpGet("GetSimiilarMovies")]
         public async Task<IActionResult> GetSimilarMovies(string Hashtag)

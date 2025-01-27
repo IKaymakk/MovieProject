@@ -41,10 +41,11 @@
             </div>
         </div>
     </div>
+
     <header>
         <div>
             <div class="search-container top-search">
-                <input type="text" class="search-bar" placeholder="Bir film adı veya seri girin">
+                <input type="text" id="searchBar" class="search-bar" placeholder="Bir film adı veya seri girin">
             </div>
         </div>
     </header>
@@ -107,59 +108,73 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-@* <script>
-    $(document).ready(function () {
-        $('#filterbar').change(function () {
-            var selectedValue = $(this).val();
-            $.ajax({
-                url: '/Movie/FilteredMovieList',
-                type: 'GET',
-                data: { SortyBy: selectedValue },
-                success: function (result) {
-                    // Dönen HTML'i div içerisine yerleştir
-                    $('.xd').html('');
-                    $('.xd').html(result);
-                },
-                error: function () {
-                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
-                }
-            });
-        });
-    });
-</script> *@
-
 <script>
     $(document).ready(function () {
-        function loadMovies(sortBy, page) {
+        // Arama kutusundaki değişiklik
+        $('#searchBar').on('input', function () {
+            var searchTerm = $(this).val();
+            var sortBy = $('#filterbar').val();
+            loadMovies(searchTerm, sortBy, 1); // Arama ve sıralama ile birlikte
+        });
+
+        // Sıralama dropdown'unda değişiklik
+        $('#filterbar').change(function () {
+            var sortBy = $(this).val();
+            var searchTerm = $('#searchBar').val();
+            loadMovies(searchTerm, sortBy, 1); // Arama ve sıralama ile birlikte
+        });
+
+        // Filmleri yükleme fonksiyonu
+        function loadMovies(searchTerm, sortBy, page) {
+            // Eğer arama yapılmadıysa, searchTerm boşsa
+            if (!searchTerm) {
+                searchTerm = ''; // SearchTerm parametresini boş bırak
+            }
+
             $.ajax({
-                url: '/Movie/FilteredMovieList',
-                type: 'GET',
-                data: { SortBy: sortBy, Page: page },
-                success: function (result) {
-                    // Dönen HTML'i div içerisine yerleştir
-                    $('.xd').html('');
-                    $('.xd').html(result);
+                url: '/Movie/SearchMovies', // Arama ve sıralama ile veri çekme
+                method: 'GET',
+                data: {
+                    sortBy: sortBy,
+                    searchTerm: searchTerm, // Eğer arama yapılmamışsa, boş gönderilecek
+                    page: page,
+                    pageSize: 18
                 },
-                error: function () {
-                    alert('Bir hata oluştu, lütfen tekrar deneyin.');
+                success: function (data) {
+                    var html = '';
+                    data.movies.forEach(function (movie) {
+                        html += `
+                                    <div class="movie-item-style-2 movie-item-style-1">
+                                        <img src="${movie.image}" alt="">
+                                        <div class="hvr-inner">
+                                            <a href="/Movie/MovieDetails/${movie.id}"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                        </div>
+                                        <div class="mv-item-infor">
+                                            <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                            <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                        </div>
+                                    </div>`;
+                    });
+                    $('.flex-wrap-movielist').html(html); // Yeni HTML ile güncelle
+                },
+                error: function (xhr) {
+                    console.error("Hata oluştu:", xhr.responseText);
+                    $('#xd').html('<p>Filmler yüklenirken bir hata oluştu.</p>');
                 }
             });
         }
-
-        // Sıralama değiştiğinde film listesini yükle
-        $('#filterbar').change(function () {
-            var selectedValue = $(this).val();
-            loadMovies(selectedValue, 1); // İlk sayfadan başla
-        });
 
         // Sayfa butonlarına tıklandığında film listesini yükle
         $(document).on('click', '.pagination2 a', function (e) {
             e.preventDefault();
             var page = $(this).data('page');
             var sortBy = $('#filterbar').val();
-            loadMovies(sortBy, page);
+            var searchTerm = $('#searchBar').val();
+            loadMovies(searchTerm, sortBy, page); // Arama ve sıralama ile birlikte
         });
     });
 </script>
+
+
 
 

@@ -17,5 +17,6 @@ namespace MovieProject.Application.Interfaces
         Task<List<Movie>> GetFilterMoviesList(FilterListDto options);
         Task<(List<Movie>, int)> GetFilterMoviesListWithCount(FilterListDto options);
         Task<List<Movie>> GetSimilarMovies(string Hashtag);
+        Task<(List<Movie>, int)> SearchMoviesWithSortingAndCount(string? searchTerm, string? sortBy, int page, int pageSize);
     }
 }

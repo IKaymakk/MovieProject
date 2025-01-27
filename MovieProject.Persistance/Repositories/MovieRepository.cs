@@ -237,8 +237,54 @@ namespace MovieProject.Persistance.Repositories
 
             return movies;
         }
+
+        public async Task<(List<Movie>, int)> SearchMoviesWithSortingAndCount(string? searchTerm, string? sortBy, int page, int pageSize)
+        {
+            var query = _context.Movies
+                .AsNoTracking()
+                .Include(x => x.MovieGenres)
+                .ThenInclude(x => x.Genre)
+                .Where(x => string.IsNullOrEmpty(searchTerm) || x.Name.Contains(searchTerm))
+                .Select(x => new Movie
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Image = x.Image,
+                    Score = x.Score,
+                    ReleaseDate = x.ReleaseDate
+                });
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                query = sortBy switch
+                {
+                    "NameAsc" => query.OrderBy(x => x.Name),
+                    "NameDesc" => query.OrderByDescending(x => x.Name),
+                    "ScoreAsc" => query.OrderBy(x => x.Score),
+                    "ScoreDesc" => query.OrderByDescending(x => x.Score),
+                    "ReleaseDateAsc" => query.OrderBy(x => x.ReleaseDate),
+                    "ReleaseDateDesc" => query.OrderByDescending(x => x.ReleaseDate),
+                    _ => query
+                };
+            }
+
+            // Toplam kayıt sayısı
+            var totalCount = await query.CountAsync();
+
+            // Sayfalama
+            if (page > 0 && pageSize > 0)
+            {
+                var skip = (page - 1) * pageSize;
+                query = query.Skip(skip).Take(pageSize);
+            }
+
+            var movies = await query.ToListAsync();
+
+            return (movies, totalCount); // Filmler ve toplam kayıt sayısı döndürülüyor
+        }
     }
 }
+
 
 
 //// Filtreleme

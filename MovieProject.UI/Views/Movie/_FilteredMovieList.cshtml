@@ -1,19 +1,21 @@
 ﻿@model DTO.UI_Dtos.PaginatedMovieDto
 
-<div class="flex-wrap-movielist mv-grid-fw">
-    @foreach (var x in Model.Movies) 
-    {
-        <div class="movie-item-style-2 movie-item-style-1">
-            <img src="@x.Image" alt="">
-            <div class="hvr-inner">
-                <a href="/Movie/MovieDetails/@x.Id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+<div class="partialView">
+    <div class="flex-wrap-movielist 3152 mv-grid-fw">
+        @foreach (var x in Model.Movies)
+        {
+            <div class="movie-item-style-2 movie-item-style-1">
+                <img src="@x.Image" alt="">
+                <div class="hvr-inner">
+                    <a href="/Movie/MovieDetails/@x.Id"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                </div>
+                <div class="mv-item-infor">
+                    <h6><a href="/Movie/MovieDetails/@x.Id">@x.Name</a></h6>
+                    <p class="rate"><i class="ion-android-star"></i><span>@x.Score.ToString("0.0")</span> /10</p>
+                </div>
             </div>
-            <div class="mv-item-infor">
-                <h6><a href="/Movie/MovieDetails/@x.Id">@x.Name</a></h6>
-                <p class="rate"><i class="ion-android-star"></i><span>@x.Score.ToString("0.0")</span> /10</p>
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <!-- Sayfalama -->
