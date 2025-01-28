@@ -238,15 +238,16 @@ namespace MovieProject.Persistance.Repositories
             return movies;
         }
 
-        public async Task<(List<Movie>, int)> SearchMoviesWithSortingAndCount(string? searchTerm, string? sortBy, int page, int pageSize)
+        public async Task<(List<Movie>, int)> SearchMoviesWithSortingAndCount(string? searchTerm, string? sortBy, int page, int pageSize, int? categoryId)
         {
             var query = _context.Movies
                 .AsNoTracking()
                 .Include(x => x.MovieGenres)
                 .ThenInclude(x => x.Genre)
-                .Where(x => string.IsNullOrEmpty(searchTerm) || x.Name.Contains(searchTerm))
-                .Select(x => new Movie
-                {
+                .Where(x => (string.IsNullOrEmpty(searchTerm) || x.Name.Contains(searchTerm)) &&
+                    (!categoryId.HasValue || x.MovieGenres.Any(mg => mg.GenreId == categoryId)))
+        .Select(x => new Movie
+        {
                     Id = x.Id,
                     Name = x.Name,
                     Image = x.Image,

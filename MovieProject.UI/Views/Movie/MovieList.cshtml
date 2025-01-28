@@ -57,13 +57,12 @@
 
 
                     <div class="topbar-filter fw">
-                        <p>Toplamda <span>@TempData["moviecount2"] Film</span> Bulundu</p>
+                        <p>Toplamda <span>@TempData["moviecount2"] Film</span> Mevcut</p>
                         <label>Sıralama</label>
                         <partial name="~/Views/Movie/FilterBarPartial.cshtml" />
                         <a href="movielist.html" class="list"><i class="ion-ios-list-outline "></i></a>
                         <a href="moviegridfw.html" class="grid"><i class="ion-grid active"></i></a>
                     </div>
-
                     <div class="xd">
                         <div class="flex-wrap-movielist mv-grid-fw">
                             <!----------------------------FilmListesi--------------------------------->
@@ -144,16 +143,16 @@
                     var html = '';
                     data.movies.forEach(function (movie) {
                         html += `
-                                    <div class="movie-item-style-2 movie-item-style-1">
-                                        <img src="${movie.image}" alt="">
-                                        <div class="hvr-inner">
-                                            <a href="/Movie/MovieDetails/${movie.id}"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
-                                        </div>
-                                        <div class="mv-item-infor">
-                                            <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
-                                            <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
-                                        </div>
-                                    </div>`;
+                                        <div class="movie-item-style-2 movie-item-style-1">
+                                            <img src="${movie.image}" alt="">
+                                            <div class="hvr-inner">
+                                                <a href="/Movie/MovieDetails/${movie.id}"> Filme Git <i class="ion-android-arrow-dropright"></i> </a>
+                                            </div>
+                                            <div class="mv-item-infor">
+                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                            </div>
+                                        </div>`;
                     });
                     $('.flex-wrap-movielist').html(html); // Yeni HTML ile güncelle
                 },

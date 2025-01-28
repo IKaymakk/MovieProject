@@ -19,10 +19,10 @@ namespace MovieProject.Application.Features.Movie.Commands
         public string Trailer { get; set; }
         public string HashTag { get; set; }
 
-        public int Score { get; set; }
+        public Decimal Score { get; set; }
         public int Year { get; set; }
         public int RunTime { get; set; }
-        public int ImbdScore { get; set; }
+        public Decimal ImbdScore { get; set; }
 
         public DateTime ReleaseDate { get; set; }
     }

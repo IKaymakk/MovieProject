@@ -13,13 +13,15 @@ namespace MovieProject.Application.Features.Movie.Queries
         public string SortBy { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
+        public int? categoryId { get; set; }
 
-        public SearchMoviesQuery(string? searchTerm, string? sortBy, int page, int pageSize)
+        public SearchMoviesQuery(string? searchTerm, string? sortBy, int page, int pageSize, int? categoryId)
         {
             SearchTerm = searchTerm;
             SortBy = sortBy;
             Page = page;
             PageSize = pageSize;
+            this.categoryId = categoryId;
         }
         public SearchMoviesQuery()
         {

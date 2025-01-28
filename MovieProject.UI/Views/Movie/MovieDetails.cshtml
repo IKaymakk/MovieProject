@@ -54,20 +54,27 @@
                                 <i class="ion-android-star"></i>
                                 <p>
                                     <span>@Model.Score.ToString("0.0")</span> /10<br>
-                                    <span class="rv">56 Reviews</span>
                                 </p>
                             </div>
                             <div class="rate-star">
-                                <p>Filme Puan Ver:  </p>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star"></i>
-                                <i class="ion-ios-star-outline"></i>
+                                @{
+                                    const int maxStars = 10; // Maksimum yıldız sayısı
+                                    var starCount = Math.Clamp(Model.Score, 0, maxStars); // Puanı 0-10 arası sınırla
+
+                                    <p>Filme Puan Ver:</p>
+
+                                    for (int i = 1; i <= maxStars; i++)
+                                    {
+                                        if (i <= starCount)
+                                        {
+                                            <i class="ion-ios-star"></i> <!-- Dolu yıldız -->
+                                        }
+                                        else
+                                        {
+                                            <i class="ion-ios-star-outline"></i> <!-- Boş yıldız -->
+                                        }
+                                    }
+                                }
                             </div>
                         </div>
                         <!----------------- movie rate ----------------->
@@ -423,16 +430,16 @@
             } else {
                 comments.forEach(function (comment) {
                     var commentHtml = `
-                                                             <div class="mv-user-review-item">
-                                                                <div class="user-infor">
-                                                                <img src="${comment.appUserImage}" alt="User Avatar">
-                                                                        <div>
-                                                                            <h3>${comment.firstName} ${comment.lastName}</h3>
-                                                                            <p class="time"> ${new Date(comment.createdDate).toLocaleDateString()}<a style="margin-left:1em" href="#">${comment.userName}</a></p>
+                                                                     <div class="mv-user-review-item">
+                                                                        <div class="user-infor">
+                                                                        <img src="${comment.appUserImage}" alt="User Avatar">
+                                                                                <div>
+                                                                                    <h3>${comment.firstName} ${comment.lastName}</h3>
+                                                                                    <p class="time"> ${new Date(comment.createdDate).toLocaleDateString()}<a style="margin-left:1em" href="#">${comment.userName}</a></p>
+                                                                                </div>
                                                                         </div>
-                                                                </div>
-                                                                <p>${comment.commentText}</p>
-                                                             </div>`;
+                                                                        <p>${comment.commentText}</p>
+                                                                     </div>`;
                     commentContainer.append(commentHtml);
                 });
             }
@@ -474,19 +481,19 @@
             }
 
             const movieItem = `
-                                                <div class="movie-item-style-2">
-                                                            <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
-                                                    <div class="mv-item-infor">
-                                                        <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
-                                                        <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
-                                                      <a href="/Movie/MovieDetails/${movie.id}">
-                                                        <p class="describe">${shortDescription}</p>
-                                                     </a>
-                                                        <p class="run-time">Film Süresi: ${movie.runTime} min</p>
-                                                        <p>Yönetmen: <a href="#">${movie.director}</a></p>
-                                                        <p>Yazar: <a href="#">${movie.writer}</a></p>
-                                                    </div>
-                                                </div>`;
+                                                        <div class="movie-item-style-2">
+                                                                    <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
+                                                            <div class="mv-item-infor">
+                                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
+                                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
+                                                              <a href="/Movie/MovieDetails/${movie.id}">
+                                                                <p class="describe">${shortDescription}</p>
+                                                             </a>
+                                                                <p class="run-time">Film Süresi: ${movie.runTime} min</p>
+                                                                <p>Yönetmen: <a href="#">${movie.director}</a></p>
+                                                                <p>Yazar: <a href="#">${movie.writer}</a></p>
+                                                            </div>
+                                                        </div>`;
             movieListContainer.append(movieItem); // Listeye ekliyoruz
         });
     }

@@ -74,10 +74,11 @@ namespace MovieProject.WebApi.Controllers
             return Ok(movies);
         }
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string? searchTerm, [FromQuery] string? sortBy, [FromQuery] int page = 1, [FromQuery] int pageSize = 18)
+        public async Task<IActionResult> Search([FromQuery] int? categoryId, [FromQuery] string? searchTerm, [FromQuery] string? sortBy, [FromQuery] int page = 1, [FromQuery] int pageSize = 18)
         {
             var query = new SearchMoviesQuery
             {
+                categoryId = categoryId,
                 SearchTerm = searchTerm,
                 SortBy = sortBy,
                 Page = page,

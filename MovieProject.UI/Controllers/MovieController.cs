@@ -93,20 +93,20 @@ namespace MovieProject.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchMovies(string? sortBy, string? searchTerm, int page = 1, int pageSize = 18)
+        public async Task<IActionResult> SearchMovies(int? categoryId, string? sortBy, string? searchTerm, int page = 1, int pageSize = 18)
         {
             var client = _httpClientFactory.CreateClient();
-            var url = $"https://localhost:44358/api/Movie/search?searchTerm={searchTerm}&sortBy={sortBy}&page={page}&pageSize={pageSize}";
+            var url = $"https://localhost:44358/api/Movie/search?categoryId={categoryId}&searchTerm={searchTerm}&sortBy={sortBy}&page={page}&pageSize={pageSize}";
 
-                var response = await client.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsondata = await response.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
+            var response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var jsondata = await response.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
 
-                    return Json(values); 
-                }
-                return BadRequest("Film listesi alınamadı: " + response.ReasonPhrase);
+                return Json(values);
+            }
+            return BadRequest("Film listesi alınamadı: " + response.ReasonPhrase);
         }
 
     }

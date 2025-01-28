@@ -24,8 +24,8 @@ namespace MovieProject.Application.Features.Movie.Handler
 
         public async Task<PaginatedMovieResult> Handle(SearchMoviesQuery request, CancellationToken cancellationToken)
         {
-            var (movies, totalCount) = await _repository.SearchMoviesWithSortingAndCount(request.SearchTerm, request.SortBy, request.Page, request.PageSize);
-          
+            var (movies, totalCount) = await _repository.SearchMoviesWithSortingAndCount(request.SearchTerm, request.SortBy, request.Page, request.PageSize, request.categoryId);
+
             var mappedMovies = _mapper.Map<List<GetMoviesByFilterQueryResult>>(movies);
 
             var totalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize);
