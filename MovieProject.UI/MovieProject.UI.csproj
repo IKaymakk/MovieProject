@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DTO\DTO.csproj" />
+    <ProjectReference Include="..\MovieProject.Application\MovieProject.Application.csproj" />
+    <ProjectReference Include="..\MovieProject.Persistance\MovieProject.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

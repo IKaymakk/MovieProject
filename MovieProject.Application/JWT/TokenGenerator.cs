@@ -13,48 +13,39 @@ namespace MovieProject.Application.JWT
 {
     public class TokenGenerator
     {
-        private readonly IConfiguration _configuration;
-
+        private static IConfiguration? _configuration;
         public TokenGenerator(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public TokenResponseDto GenerateToken(UserDataDto entity)
+        public static TokenResponseDto GenerateToken(UserDataDto entity)
         {
             // appsettings.json'dan ayarları okuma
-            var issuer = _configuration["JwtSettings:Issuer"];
-            var audience = _configuration["JwtSettings:Audience"];
-            var key = _configuration["JwtSettings:Key"];
-            var expireTime = int.Parse(_configuration["JwtSettings:ExpireTime"] ?? "1");
+            if (JwtDefaults.Key == null) throw new Exception("Key Null Olamaz");
 
-            if (string.IsNullOrEmpty(key)) throw new Exception("Key Null Olamaz");
-
-            // Security key oluştur
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtDefaults.Key!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // Claims tanımlama
-            var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, entity.UserName!),
-            new Claim(ClaimTypes.Role, entity.AppRoleId)
-        };
+            var claim = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, entity.UserName!),
+                new Claim(ClaimTypes.Role, entity.Role)
+            };
 
-            // Token süresi
-            var expireDate = DateTime.UtcNow.AddHours(expireTime);
+            var expireDate = DateTime.UtcNow.AddHours(JwtDefaults.ExpireTime);
 
-            // JWT oluşturma
             var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: expireDate,
-                signingCredentials: credentials
-            );
+               issuer: JwtDefaults.Issuer,
+               audience: JwtDefaults.Audience,
+               claims: claim,
+               expires: expireDate,
+               signingCredentials: credentials
+                );
 
-            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             return new TokenResponseDto(handler.WriteToken(token), expireDate);
+
         }
     }
 
