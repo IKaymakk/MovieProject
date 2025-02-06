@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MovieProject.UI.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,30 +10,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 //JWT Authentication ekleme
 builder.Services.AddHttpClient(); // HttpClient ekle
-builder.Services.AddSession(); // Session y�netimi
-builder.Services.AddHttpContextAccessor(); // HttpContext eri�imi i�in
+builder.Services.AddSession(); // Session yönetimi
+builder.Services.AddHttpContextAccessor(); // HttpContext erişimi için
 builder.Services.AddScoped<ApiService>();  // ApiService'i ekliyoruz
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+//  Authentication Yapısı (SADECE COOKIE AUTHENTICATION)
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true, // G�venlik i�in ekledim
-            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-            ValidAudience = builder.Configuration["JwtSettings:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
-        };
+        options.LoginPath = "/Login/Login";     // Giriş yolu
+        options.LogoutPath = "/Login/LogOut";     // Çıkış yolu
+        options.AccessDeniedPath = "/Default/PageDenied"; // Yetkisiz erişim sayfası
+        options.Cookie.Name = "MovieProjectCookie";       // Cookie Adı
+        options.Cookie.HttpOnly = true;           // XSS saldırılarından korunmak için
+        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // HTTPS varsa Secure yap
+        options.Cookie.SameSite = SameSiteMode.Strict; // CSRF saldırılarından korunmak için
+        options.ExpireTimeSpan = TimeSpan.FromHours(1); // Cookie ömrü
+        options.SlidingExpiration = true; // Kullanıcı aktifse süre yenilenir
     });
 
 
 
 
-builder.Services.AddInfrastructure("https://localhost:44358/");
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
@@ -57,13 +58,14 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseSession();         // Session y�netimi burada olmal�
-app.UseAuthentication();  // Kullan�c� kimlik do�rulama (JWT)
-app.UseAuthorization();
-app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();         // Session yönetimi burada olmalı
+app.UseAuthentication();  // Kullanıcı kimlik doğrulama (JWT)
+app.UseAuthorization();
+app.UseCors("AllowAll");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Default}/{action=Index}/{id?}");

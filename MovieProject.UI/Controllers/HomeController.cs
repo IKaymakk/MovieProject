@@ -1,35 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Application.Interfaces;
 using MovieProject.UI.Models;
+using MovieProject.UI.Services;
 using System.Diagnostics;
 
 namespace MovieProject.UI.Controllers;
 
-public class HomeController : BaseController
+public class HomeController:Controller
 {
-    private readonly IApiClient _apiClient;
+    private readonly ApiService _apiService;
 
-    public HomeController(IApiClient apiClient, IHttpContextAccessor httpContextAccessor)
-        : base(httpContextAccessor)
+    public HomeController(ApiService apiService)
     {
-        _apiClient = apiClient;
+        _apiService = apiService;
     }
 
     public async Task<IActionResult> Index()
     {
-        if (string.IsNullOrEmpty(JwtToken))
-            return RedirectToAction("SignIn", "Auth");
+        var response = await _apiService.GetAsync("https://localhost:44358/api/AppUser/protected-data");
 
-        var response = await _apiClient.GetAsync("api/protected-data", JwtToken);
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var data = await response.Content.ReadAsStringAsync();
-            ViewBag.Data = data;
+            return Unauthorized();
         }
-        else
-        {
-            ViewBag.Error = "Yetkiniz yok veya API çaðrýsý baþarýsýz.";
-        }
+
+        var data = await response.Content.ReadAsStringAsync();
+        ViewBag.Data = data;
 
         return View();
     }

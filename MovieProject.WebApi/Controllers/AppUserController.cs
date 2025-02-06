@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Application.DTOS;
 using MovieProject.Application.Interfaces;
@@ -24,6 +25,13 @@ namespace MovieProject.WebApi.Controllers
             if (user == null || user.IsExist == false) return NotFound("Hatalı Kullanıcı Adı Veya Şifre");
             var token = TokenGenerator.GenerateToken(user);
             return Ok(token);
+        }
+        [Authorize]
+        [HttpGet("protected-data")]
+        public IActionResult GetProtectedData()
+        {
+            // Authenticated user can access this
+            return Ok("This is a protected data");
         }
     }
 }

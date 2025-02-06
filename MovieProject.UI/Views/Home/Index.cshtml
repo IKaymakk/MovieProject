@@ -2,20 +2,18 @@
     ViewBag.Title = "Ana Sayfa";
 }
 
-<h2>API'den Gelen Veri</h2>
 
-@if (!string.IsNullOrEmpty(ViewBag.Error))
+@if (ViewBag.Data != null)
 {
-    <div class="alert alert-danger">@ViewBag.Error</div>
-}
-else if (!string.IsNullOrEmpty(ViewBag.Data))
-{
-    <div class="alert alert-success">
-        <h4>Başarılı API Yanıtı:</h4>
-        <pre>@ViewBag.Data</pre>
+    <div>
+        <h3>API'den Alınan Veri:</h3>
+        <pre>@ViewBag.Data</pre>  <!-- Veriyi burada görüntülüyoruz -->
     </div>
 }
 else
 {
-    <p>API'den veri yükleniyor...</p>
+    <div>
+        <h3>Veri alınamadı!</h3>
+        <p>Bir hata oluştu veya API'den veri alınamadı.</p>
+    </div>
 }
