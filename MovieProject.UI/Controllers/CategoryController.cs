@@ -7,7 +7,6 @@ using System.Net.Http.Headers;
 
 namespace MovieProject.UI.Controllers
 {
-    [Authorize]  // Kullanıcı giriş yapmış ve geçerli token'a sahip olmalı
     public class CategoryController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -21,10 +20,7 @@ namespace MovieProject.UI.Controllers
 
         public async Task<IActionResult> CategoryList()
         {
-           
             var client = _httpClientFactory.CreateClient();
-
-            // Authorization header'ına token ekliyoruz
 
             // API'ye istek gönderiliyor
             var response = await client.GetAsync("https://localhost:44358/api/Genre");

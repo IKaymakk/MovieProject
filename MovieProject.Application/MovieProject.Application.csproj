@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Comment\Commands\" />
-    <Folder Include="Features\AppUser\" />
   </ItemGroup>
 
 </Project>

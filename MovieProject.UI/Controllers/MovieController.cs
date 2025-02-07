@@ -1,4 +1,5 @@
 ﻿using DTO.UI_Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
@@ -12,7 +13,6 @@ namespace MovieProject.UI.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-
 
         public async Task<IActionResult> MovieList(string? SortBy, int Page = 1, int PageSize = 18)
         {

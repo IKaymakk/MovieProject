@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MovieProject.Application.Features.Actor.Results;
+using MovieProject.Application.Features.AppUser.Results;
 using MovieProject.Application.Features.Comment.Results;
 using MovieProject.Application.Features.Genre.Results;
 using MovieProject.Application.Features.Movie.Commands;
@@ -45,20 +46,22 @@ namespace MovieProject.Application.Mapping
             #endregion
 
             #region MovieGenre
-
             CreateMap<MovieGenre, AddGenresToMoviesCommand>().ReverseMap();
-
             #endregion
 
             #region Comments
-
             CreateMap<Comment, GetCommentsByMovieQueryResult>()
-                .ForMember(x=>x.FirstName, y=>y.MapFrom(z=>z.AppUser.FirstName))
-                .ForMember(x=>x.LastName, y=>y.MapFrom(z=>z.AppUser.LastName))
-                .ForMember(x=>x.UserName, y=>y.MapFrom(z=>z.AppUser.UserName))
+                .ForMember(x => x.FirstName, y => y.MapFrom(z => z.AppUser.FirstName))
+                .ForMember(x => x.LastName, y => y.MapFrom(z => z.AppUser.LastName))
+                .ForMember(x => x.UserName, y => y.MapFrom(z => z.AppUser.UserName))
                 .ReverseMap();
-
             #endregion
+
+            #region AppUser
+            CreateMap<GetAllAppUsersQueryResult, AppUser>().ReverseMap();
+            CreateMap<GetAppUserByIdQueryResult, AppUser>().ReverseMap();
+            #endregion
+
         }
     }
 }
