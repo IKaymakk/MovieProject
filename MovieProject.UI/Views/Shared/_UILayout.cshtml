@@ -82,8 +82,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="~/js/login.js"></script>
+   
 
 
 
@@ -124,62 +123,21 @@
     <!--end of login form popup-->
     <!--signup form popup-->
     <div class="login-wrapper" id="signup-content">
-
         <div class="login-content">
             <a href="#" class="close">x</a>
             <h3>Kayıt Ol</h3>
-            <form>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="firstname" class="form-label">
-                            İsim
-                            <input type="text" id="firstname" name="FirstName" placeholder="">
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="lastname" class="form-label">
-                            Soyisim
-                            <input type="text" id="lastname" name="LastName" placeholder="">
-                        </label>
-                    </div>
-                </div>
+            <form id="signupForm">
+                <input type="text" id="kadi" placeholder="Kullanıcı Adı" autocomplete="off">
                 <br />
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="username" class="form-label">
-                            Kullanıcı Adı
-                            <input type="text" id="username" name="UserName" placeholder="">
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">
-                            E-Mail Adresi
-                            <input type="email" id="email" name="MailAddress" placeholder="">
-                        </label>
-                    </div>
-                    <br />
-                </div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="password" class="form-label">
-                            Parola
-                            <input type="password" id="password" name="Password" placeholder="">
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="repassword" class="form-label">
-                            Parolayı Onayla
-                            <input type="password"  id="repassword" placeholder="">
-                        </label>
-                    </div>
-                    <br />
-                    <br />
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12 text-center">
-                        <button type="button" class="btn btn-primary w-100" id="kayit">Kayıt Ol</button>
-                    </div>
-                </div>
+                <input type="password" id="sifre" placeholder="Parola" autocomplete="off">
+                <br />
+                <input type="email" id="madres" placeholder="E-Mail" autocomplete="off">
+                <br />
+                <input type="text" id="firstname" placeholder="İsim">
+                <br />
+                <input type="text" id="lastname"  placeholder="Soyisim">
+                <br />
+                <button type="button" id="kayit">Kayıt Ol</button>
             </form>
         </div>
 
@@ -245,10 +203,12 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/login.js"></script>
     <script src="~/html/dest/js/jquery.js"></script>
     <script src="~/html/dest/js/plugins.js"></script>
     <script src="~/html/dest/js/plugins2.js"></script>
     <script src="~/html/dest/js/custom.js"></script>
 </body>
-
 </html>

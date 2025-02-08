@@ -35,6 +35,7 @@ namespace MovieProject.Application.Mapping
             CreateMap<GetMoviesByGenreQueryResult, Movie>().ReverseMap();
             CreateMap<GetMoviesByFilterQueryResult, Movie>().ReverseMap();
             CreateMap<GetSimilarMoviesQueryResult, Movie>().ReverseMap();
+            CreateMap<GetFavoritedMoviesByUserQueryResult, Movie>().ReverseMap();
             #endregion
 
             #region Genre
@@ -55,6 +56,9 @@ namespace MovieProject.Application.Mapping
                 .ForMember(x => x.LastName, y => y.MapFrom(z => z.AppUser.LastName))
                 .ForMember(x => x.UserName, y => y.MapFrom(z => z.AppUser.UserName))
                 .ReverseMap();
+
+            CreateMap<Comment, GetCommentsByUserIdQueryResult>()
+                .ReverseMap();
             #endregion
 
             #region AppUser
@@ -62,6 +66,7 @@ namespace MovieProject.Application.Mapping
             CreateMap<GetAppUserByIdQueryResult, AppUser>().ReverseMap();
             #endregion
 
+           
         }
     }
 }

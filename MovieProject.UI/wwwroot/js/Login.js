@@ -61,15 +61,23 @@
         }, 1000); // 2 saniye bekle
     });
 
+
+
+});
+
+$(document).ready(function () {
+
     $("#kayit").click(function (e) {
         e.preventDefault();
 
-        var username = $("#username").val();
-        var password = $("#password").val();
-        var firstname = $("#firstname").val();
-        var lastname = $("#lastname").val();
-        var email = $("#email").val();
-        var image = "boş";
+        var userData = {
+            username: $("#kadi").val(),
+            password: $("#sifre").val(),
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            email: $("#madres").val(),
+            image: "boş"
+        };
 
 
         var button = $("#kayit");
@@ -82,18 +90,14 @@
             "transition": "background-color 1s ease" // Yumuşak geçiş
         });
 
+
         setTimeout(function () {
             $.ajax({
                 url: "/Login/SignUp",
                 type: "POST",
-                data: { // Burada JSON.stringify vs kullanmıyoruz, direkt form verilerini gönderiyoruz
-                    firstname: firstname,
-                    lastname: lastname,
-                    username: username,
-                    email: email,
-                    password: password,
-                    image: image
-                }, success: function (response) {
+                contentType: "application/json", // JSON formatında veri gönderiyoruz
+                data: JSON.stringify(userData),  // Veriyi JSON'a çeviriyoruz
+                success: function (response) {
                     if (response.success) {
                         button.text("Kayıt Başarılı, Hoşgeldiniz"); // Başarı mesajı
                         button.css({
@@ -119,6 +123,7 @@
                 },
                 error: function () {
                     button.text("Sunucu hatası! Lütfen tekrar deneyin."); // Sunucu hatası mesajı
+                    console.log("Sunucu hatası", err);
                     button.css({
                         "background-color": "#dc3545", // Kırmızı renk (danger)
                         "color": "white",
@@ -129,6 +134,4 @@
             });
         }, 1000);
     });
-
-
 });

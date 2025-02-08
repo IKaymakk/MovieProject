@@ -8,10 +8,10 @@ namespace DTO.UI_Dtos;
 
 public class CreateAppUserDto
 {
-    public string UserName { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string MailAddress { get; set; }
-    public string Image { get; set; }
-    public string Password { get; set; }
+    public string username { get; set; }     // Değiştirildi
+    public string firstname { get; set; }    // Değiştirildi
+    public string lastname { get; set; }     // Değiştirildi
+    public string email { get; set; }        // Değiştirildi
+    public string image { get; set; }
+    public string password { get; set; }
 }

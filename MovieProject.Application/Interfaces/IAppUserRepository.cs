@@ -12,6 +12,5 @@ namespace MovieProject.Application.Interfaces
     {
         Task<string> GetAppUserRoleAsync(int id);
         Task<UserDataDto> CheckUser(CheckUserDto checkUserDto);
-
     }
 }

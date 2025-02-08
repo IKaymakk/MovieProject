@@ -22,5 +22,11 @@ namespace MovieProject.WebApi.Controllers
             var values = await _mediator.Send(new GetCommentsByMovieQuery(id));
             return Ok(values);
         }
+        [HttpGet("GetCommentsByUserId")]
+        public async Task<IActionResult> GetCommentsByUserId(int id)
+        {
+            var values = await _mediator.Send(new GetCommentsByUserIdQuery(id));
+            return Ok(values);
+        }
     }
 }

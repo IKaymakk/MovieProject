@@ -248,12 +248,12 @@ namespace MovieProject.Persistance.Repositories
                     (!categoryId.HasValue || x.MovieGenres.Any(mg => mg.GenreId == categoryId)))
         .Select(x => new Movie
         {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Image = x.Image,
-                    Score = x.Score,
-                    ReleaseDate = x.ReleaseDate
-                });
+            Id = x.Id,
+            Name = x.Name,
+            Image = x.Image,
+            Score = x.Score,
+            ReleaseDate = x.ReleaseDate
+        });
 
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -283,6 +283,27 @@ namespace MovieProject.Persistance.Repositories
 
             return (movies, totalCount); // Filmler ve toplam kayıt sayısı döndürülüyor
         }
+
+        public async Task<List<Movie>> GetFavoritedMoviesByUser(int userId)
+        {
+            var favoritedMovies = await _context.FavoriteMovies
+                .AsNoTracking()
+                .Include(fm => fm.Movie)
+                .Include(fm => fm.AppUser)
+                .Where(x => x.AppUserId == userId)
+                .Select(fm => new Movie
+                {
+                    Id = fm.MovieId,
+                    Name = fm.Movie.Name,
+                    Image = fm.Movie.Image,
+                    Score = fm.Movie.Score,
+                    ReleaseDate = fm.Movie.ReleaseDate
+                }) 
+                .ToListAsync();
+
+            return favoritedMovies;
+        }
+
     }
 }
 
