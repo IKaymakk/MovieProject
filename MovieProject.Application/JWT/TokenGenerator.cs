@@ -30,7 +30,8 @@ namespace MovieProject.Application.JWT
             var claim = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, entity.UserName!),
-                new Claim(ClaimTypes.Role, entity.Role)
+                new Claim(ClaimTypes.Role, entity.Role),
+                new Claim("UserId", entity.AppUserId.ToString())
             };
 
             var expireDate = DateTime.UtcNow.AddHours(JwtDefaults.ExpireTime);
@@ -45,7 +46,6 @@ namespace MovieProject.Application.JWT
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             return new TokenResponseDto(handler.WriteToken(token), expireDate);
-
         }
     }
 

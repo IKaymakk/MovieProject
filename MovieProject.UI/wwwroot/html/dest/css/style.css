@@ -6692,8 +6692,7 @@ ul {
         font-family: 'Dosis', sans-serif;
         font-size: 36px;
         color: #ffffff;
-        font-weight: 700;
-        text-transform: uppercase;
+        font-weight: 600;
         margin-bottom: 20px;
     }
 
@@ -6753,7 +6752,7 @@ ul {
 
 .user-hero {
     height: 385px;
-    background: url('../images/uploads/user-hero-bg.jpg') no-repeat;
+    background: url('~/images/background-slider.jpg') no-repeat;
 }
 
     .user-hero .hero-ct {
@@ -9455,7 +9454,7 @@ header .top-search {
         color: #abb7c4;
     }
 
-  
+
 
 header #nav-icon1 {
     width: 15px;
@@ -9682,7 +9681,7 @@ header#headerv3-light {
 }
 
 footer {
-    background: url('/images/background-slider.jpg') no-repeat; 
+    background: url('/images/background-slider.jpg') no-repeat;
     background-position: center;
     background-size: cover;
 }
@@ -9885,6 +9884,6 @@ footer.full-width-ft .ft-copyright {
     /* Daha küçük mobil cihazlar için */
     .moveimage1 {
         width: 380px !important;
-        height:500px !important;
+        height: 500px !important;
     }
 }

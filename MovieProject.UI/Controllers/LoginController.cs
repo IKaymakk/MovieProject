@@ -7,6 +7,7 @@ using DTO.UI_Dtos;
 using System.Text.Json;
 using Newtonsoft.Json;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MovieProject.UI.Controllers;
 
@@ -23,7 +24,6 @@ public class LoginController : Controller
     //{
     //    return View();
     //}
-    [HttpPost]
     public async Task<JsonResult> Login(string username, string password)
     {
         var client = _httpClientFactory.CreateClient();
@@ -36,25 +36,28 @@ public class LoginController : Controller
 
         var result = await response.Content.ReadFromJsonAsync<JwtResponse>();
 
-        // Token'ı Session'a kaydet
-        HttpContext.Session.SetString("AccessToken", result.Token);
+        // **Token'ı çözümle**
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(result.Token);
 
-        // Kullanıcı bilgilerini al ve Claims oluştur
+        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "UserId");
+        var userId = userIdClaim?.Value;
+
         var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, username),
-        new Claim(ClaimTypes.Role, "User"), // Rol ekleyebilirsin
-        new Claim("AccessToken", result.Token) // Token'ı claim olarak saklamak isteyebilirsin
+        new Claim(ClaimTypes.Role, "User"),
+        new Claim("AccessToken", result.Token),
+        new Claim("UserId", userId) // **UserId'yi claims içine ekledik**
     };
 
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var authProperties = new AuthenticationProperties
         {
-            IsPersistent = true, // Tarayıcı kapansa bile giriş devam etsin
-            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1) // 1 saat sonra cookie silinsin
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
         };
 
-        // Cookie Authentication ile giriş yap
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity),
@@ -66,9 +69,11 @@ public class LoginController : Controller
             token = result.Token,
             username = username,
             role = "User",
+            userId = userId,
             expiresAt = DateTimeOffset.UtcNow.AddHours(1)
         });
     }
+
     [HttpPost]
     public async Task<JsonResult> SignUp(CreateAppUserDto dto)
     {

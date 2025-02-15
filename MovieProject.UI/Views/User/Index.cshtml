@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UILayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <!-- Basic need -->
+    <title>Open Pediatrics</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+    <!-- Mobile specific meta -->
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="css/plugins.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<style>
+    .user-hero {
+        height: 385px;
+        background: url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat !important;
+    }
+</style>
+<body>
+
+    <div class="hero user-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="margin-right:22em" class="hero-ct">
+                        <h1>Profilim</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-single">
+        <div class="container">
+            <div class="row ipad-width">
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class="user-information">
+                        <div class="user-img">
+                            <a href="#"><img src="images/uploads/user-img.png" alt=""><br></a>
+                            <a href="#" class="redbtn">Change avatar</a>
+                        </div>
+                        <div class="user-fav">
+                            <p>Account Details</p>
+                            <ul>
+                                <li class="active"><a href="userprofile.html">Profile</a></li>
+                                <li><a href="userfavoritelist.html">Favorite movies</a></li>
+                                <li><a href="userrate.html">Rated movies</a></li>
+                            </ul>
+                        </div>
+                        <div class="user-fav">
+                            <p>Others</p>
+                            <ul>
+                                <li><a href="#">Change password</a></li>
+                                <li><a href="#">Log out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div class="form-style-1 user-pro" action="">
+
+
+                        <form action="" class="user" id="profileDetails">
+                            <h4>Profil Bilgilerim</h4>
+                            <div class="row">
+                                <div class="col-md-6 form-it">
+                                    <label>İsim</label>
+                                    <input type="text" id="firstName">
+                                </div>
+                                <div class="col-md-6 form-it">
+                                    <label>Soyisim</label>
+                                    <input type="text" id="lastName">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-it">
+                                    <label>Kullanıcı Adı</label>
+                                    <input type="text" id="userName">
+                                </div>
+                                <div class="col-md-6 form-it">
+                                    <label>E-Mail Adresi</label>
+                                    <input type="text" id="email">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <input id="btnKaydet" class="submit" type="submit" value="Kaydet">
+                                </div>
+                            </div>
+                        </form>
+
+
+                        <form action="" class="password">
+                            <h4>02. Change password</h4>
+                            <div class="row">
+                                <div class="col-md-6 form-it">
+                                    <label>Old Password</label>
+                                    <input type="text" placeholder="**********">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-it">
+                                    <label>New Password</label>
+                                    <input type="text" placeholder="***************">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-it">
+                                    <label>Confirm New Password</label>
+                                    <input type="text" placeholder="*************** ">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <input class="submit" type="submit" value="change">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/userjs.js"></script>
+</body>
+
+</html>

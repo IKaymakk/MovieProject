@@ -19,7 +19,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Login/Login";     // Giriş yolu
+        options.LoginPath = "/Default";     // Giriş yolu
         options.LogoutPath = "/Login/LogOut";     // Çıkış yolu
         options.AccessDeniedPath = "/Default/PageDenied"; // Yetkisiz erişim sayfası
         options.Cookie.Name = "MovieProjectCookie";       // Cookie Adı

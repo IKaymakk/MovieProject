@@ -30,7 +30,7 @@
                             "border": "1px solid #28a745"
                         });
                         setTimeout(function () { // 2 saniye bekle
-                            window.location.href = "/Default"; // Index'e yönlendir
+                            window.location.href = "/User/Index"; // Index'e yönlendir
                         }, 2000);
                     } else {
                         button.text("Hatalı Giriş Bilgileri"); // Hata mesajı
@@ -106,7 +106,7 @@ $(document).ready(function () {
                             "border": "1px solid #28a745"
                         });
                         setTimeout(function () { // 2 saniye bekle
-                            window.location.href = "/Default"; // Index'e yönlendir
+                            window.location.href = "/User"; // Index'e yönlendir
                         }, 2000);
                     } else {
                         button.text("Lütfen Bilgilerinizi Kontrol Ediniz."); // Hata mesajı
