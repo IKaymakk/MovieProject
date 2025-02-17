@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,13 @@ namespace MovieProject.WebApi.Controllers
     {
         private readonly IAppUserRepository _repository;
         private readonly IMediator _mediator;
+        private readonly IValidator<ChangeAppUserPasswordCommand> _validator;
 
-        public AppUserController(IAppUserRepository repository, IMediator mediator)
+        public AppUserController(IAppUserRepository repository, IMediator mediator, IValidator<ChangeAppUserPasswordCommand> validator)
         {
             _repository = repository;
             _mediator = mediator;
+            _validator = validator;
         }
         [Authorize]
         [HttpGet("protected-data")]
@@ -59,18 +62,30 @@ namespace MovieProject.WebApi.Controllers
             await _mediator.Send(command);
             return Ok("Kullanıcı Güncellendi");
         }
-        [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword(ChangeAppUserPasswordCommand command)
-        {
-            var result = await _mediator.Send(command);
-
-            if (result.IsSuccess)
+            [HttpPost("ChangePassword")]
+            public async Task<IActionResult> ChangePassword(ChangeAppUserPasswordCommand command)
             {
-                return Ok("Kullanıcı şifresi başarıyla güncellendi.");
+                var validationResult = await _validator.ValidateAsync(command);
+
+                // Validation hatalarını kontrol et ve sadece hata mesajlarını döndür
+                if (!validationResult.IsValid)
+                {
+                    var errorMessages = validationResult.Errors
+                        .Select(e => new { field = e.PropertyName, message = e.ErrorMessage })
+                        .ToList();
+                    return BadRequest(new { success = false, errors = errorMessages });
+                }
+
+                var result = await _mediator.Send(command);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(new { success = true, message = "Parola başarıyla değiştirildi." });
+                }
+
+                return BadRequest(new { success = false, message = result.Message });
             }
 
-            return BadRequest(result.Message);
-        }
 
     }
 }

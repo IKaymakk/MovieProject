@@ -1,6 +1,7 @@
 ﻿using DTO.UI_Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.Json;
 
@@ -84,5 +85,52 @@ namespace MovieProject.UI.Controllers
 
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            int.TryParse(userIdClaim, out int userId);
+            dto.id = userId;
+
+            try
+            {
+                var client = _client.CreateClient();
+                var response = await client.PostAsJsonAsync("https://localhost:44358/api/AppUser/ChangePassword", dto);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Parola Başarıyla Değiştirildi." });
+                }
+
+                // API'den gelen hataları al
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(responseContent);
+
+                if (jsonResponse.ContainsKey("errors")) // Eğer errors alanı varsa
+                {
+                    var errorMessages = jsonResponse["errors"]
+                        .ToObject<Dictionary<string, List<string>>>();
+
+                    var message = string.Join(", ", errorMessages.Values.SelectMany(v => v));
+                    return Json(new { success = false, message });
+                }
+                else if (jsonResponse.ContainsKey("message")) // Eğer sadece message varsa
+                {
+                    return Json(new { success = false, message = jsonResponse["message"].ToString() });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Bilinmeyen bir hata oluştu." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
     }
 }
