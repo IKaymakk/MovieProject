@@ -62,29 +62,29 @@ namespace MovieProject.WebApi.Controllers
             await _mediator.Send(command);
             return Ok("Kullanıcı Güncellendi");
         }
-            [HttpPost("ChangePassword")]
-            public async Task<IActionResult> ChangePassword(ChangeAppUserPasswordCommand command)
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangeAppUserPasswordCommand command)
+        {
+            var validationResult = await _validator.ValidateAsync(command);
+
+            // Validation hatalarını kontrol et ve sadece hata mesajlarını döndür
+            if (!validationResult.IsValid)
             {
-                var validationResult = await _validator.ValidateAsync(command);
-
-                // Validation hatalarını kontrol et ve sadece hata mesajlarını döndür
-                if (!validationResult.IsValid)
-                {
-                    var errorMessages = validationResult.Errors
-                        .Select(e => new { field = e.PropertyName, message = e.ErrorMessage })
-                        .ToList();
-                    return BadRequest(new { success = false, errors = errorMessages });
-                }
-
-                var result = await _mediator.Send(command);
-
-                if (result.IsSuccess)
-                {
-                    return Ok(new { success = true, message = "Parola başarıyla değiştirildi." });
-                }
-
-                return BadRequest(new { success = false, message = result.Message });
+                var errorMessages = validationResult.Errors
+                    .Select(e => new { field = e.PropertyName, message = e.ErrorMessage })
+                    .ToList();
+                return BadRequest(new { success = false, errors = errorMessages });
             }
+
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return Ok(new { success = true, message = "Parola başarıyla değiştirildi." });
+            }
+
+            return BadRequest(new { success = false, message = result.Message });
+        }
 
 
     }

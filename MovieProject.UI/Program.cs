@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Default";     // Giriş yolu
-        options.LogoutPath = "/Login/LogOut";     // Çıkış yolu
+        options.LogoutPath = "/Login/Logout";     // Çıkış yolu
         options.AccessDeniedPath = "/Default/PageDenied"; // Yetkisiz erişim sayfası
         options.Cookie.Name = "MovieProjectCookie";       // Cookie Adı
         options.Cookie.HttpOnly = true;           // XSS saldırılarından korunmak için

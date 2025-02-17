@@ -458,10 +458,15 @@
             success: function (data) {
                 renderMovies(data);
             },
-            error: function () {
-                alert("Bilinmeyen Bir Hata Meydana Geldi!...");
+            error: function (xhr, status, error) {
+                console.error("Durum Kodu:", xhr.status);
+                console.error("Hata Mesajı:", error);
+                console.error("Sunucudan Gelen Yanıt:", xhr.responseText);
+                alert(`Hata: ${xhr.status} - ${xhr.responseText || "Sunucudan yanıt alınamadı!"}`);
             }
         });
+
+
     });
 
     function renderMovies(movies) {
@@ -498,4 +503,3 @@
         });
     }
 </script>
-y

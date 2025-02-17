@@ -33,9 +33,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()  // Tüm domainlerden gelen isteklere izin ver
+                  .AllowAnyMethod()  // GET, POST, PUT, DELETE hepsi
+                  .AllowAnyHeader(); // Tüm header'lara izin ver
+        });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

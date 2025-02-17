@@ -62,9 +62,20 @@
                     </ul>
                     <ul class="nav navbar-nav flex-child-menu menu-right">
 
-                        <li><a href="#">İLETİŞİM</a></li>
-                        <li class="loginLink"><a href="#">Giriş Yap</a></li>
-                        <li class="btn signupLink"><a href="#">Kayıt Ol</a></li>
+                        <li><a href="#">İLETİŞİM</a></li>,
+                        @{
+                            if (User.FindFirst("UserId")?.Value != null)
+                            {
+                                <li class=""><a href="/Login/Logout">Çıkış Yap</a></li>
+                                <li class="btn"><a href="/User/Index/">Profilim</a></li>
+
+                            }
+                            else
+                            {
+                                <li class="loginLink"><a href="#">Giriş Yap</a></li>
+                                <li class="btn signupLink"><a href="#">Kayıt Ol</a></li>
+                            }
+                        }
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -81,8 +92,6 @@
             <span></span>
         </div>
     </div>
-
-   
 
 
 
@@ -135,7 +144,7 @@
                 <br />
                 <input type="text" id="firstname" placeholder="İsim">
                 <br />
-                <input type="text" id="lastname"  placeholder="Soyisim">
+                <input type="text" id="lastname" placeholder="Soyisim">
                 <br />
                 <button type="button" id="kayit">Kayıt Ol</button>
             </form>

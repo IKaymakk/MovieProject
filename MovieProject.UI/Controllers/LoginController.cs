@@ -85,16 +85,24 @@ public class LoginController : Controller
         }
         return Json(new { success = true, message = "Kayıt Başarılı" });
     }
-    [HttpPost]
-    public IActionResult Logout()
+    [HttpGet]
+    public async Task<IActionResult> Logout()
     {
-        // Token veya herhangi bir çerezi temizle
-        Response.Cookies.Delete("AccessToken");
+        // Çıkış yap
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-        // Diğer temizleme işlemleri (örneğin, oturumu sonlandırma)
+        // Çerez ve session'ı temizle
+        Response.Cookies.Delete("MovieProjectCookie", new CookieOptions
+        {
+            Path = "/",
+            Secure = true,
+            HttpOnly = true
+        });
         HttpContext.Session.Clear();
 
-        // Kullanıcıyı çıkış yaptır
-        return RedirectToAction("Index", "Home");
+        // Kullanıcıyı çıkış yaptıktan sonra yönlendir
+        return RedirectToAction("Index", "Default");
     }
+
+
 }
