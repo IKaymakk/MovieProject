@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MovieProject.Application.Features.Actor.Results;
+using MovieProject.Application.Features.AppUser.Commands;
 using MovieProject.Application.Features.AppUser.Results;
 using MovieProject.Application.Features.Comment.Results;
 using MovieProject.Application.Features.Genre.Results;
@@ -64,6 +65,7 @@ namespace MovieProject.Application.Mapping
             #region AppUser
             CreateMap<GetAllAppUsersQueryResult, AppUser>().ReverseMap();
             CreateMap<GetAppUserByIdQueryResult, AppUser>().ReverseMap();
+            CreateMap<UpdateUserDetailsCommand, AppUser>().ReverseMap();
             #endregion
 
            

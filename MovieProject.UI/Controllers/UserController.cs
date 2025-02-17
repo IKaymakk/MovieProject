@@ -1,6 +1,7 @@
 ﻿using DTO.UI_Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using System.Text.Json;
 
 namespace MovieProject.UI.Controllers
@@ -27,18 +28,8 @@ namespace MovieProject.UI.Controllers
             {
                 // Kullanıcının giriş yapıp yapmadığını kontrol et
                 var userIdClaim = User.FindFirst("UserId")?.Value;
-                if (string.IsNullOrEmpty(userIdClaim))
-                {
-                    return Json(new { success = false, message = "Kimlik doğrulama başarısız!" });
-                }
+                int.TryParse(userIdClaim, out int userId);
 
-                // UserId'yi integer'a çevir
-                if (!int.TryParse(userIdClaim, out int userId))
-                {
-                    return Json(new { success = false, message = "Geçersiz kullanıcı kimliği!" });
-                }
-
-                // API isteği için HttpClient oluştur
                 var client = _client.CreateClient();
                 var response = await client.GetAsync($"https://localhost:44358/api/AppUser/GetUser?id={userId}");
 
@@ -58,5 +49,40 @@ namespace MovieProject.UI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<JsonResult> UpdateUserDetails([FromBody] UpdateUserDetailsDto dto)
+        {
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            int.TryParse(userIdClaim, out int userId);
+            dto.id = userId;
+
+            if (dto == null)
+            {
+                return Json(new { success = false, message = "Gönderilen veri boş!" });
+            }
+
+            try
+            {
+                var client = _client.CreateClient();
+                var jsonContent = JsonSerializer.Serialize(dto);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:44358/api/AppUser/UpdateUser", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Bilgileriniz Güncellendi" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Hata! Bilgilerinizi Kontrol Ediniz." });
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu!", error = ex.Message });
+
+            }
+        }
     }
 }

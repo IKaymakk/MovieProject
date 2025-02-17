@@ -53,5 +53,24 @@ namespace MovieProject.WebApi.Controllers
             await _mediator.Send(command);
             return Ok("Kullanıcı Eklendi");
         }
+        [HttpPost("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(UpdateUserDetailsCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("Kullanıcı Güncellendi");
+        }
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangeAppUserPasswordCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return Ok("Kullanıcı şifresi başarıyla güncellendi.");
+            }
+
+            return BadRequest(result.Message);
+        }
+
     }
 }
