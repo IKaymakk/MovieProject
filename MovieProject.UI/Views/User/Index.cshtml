@@ -30,6 +30,11 @@
         height: 385px;
         background: url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat !important;
     }
+
+    #footerBar {
+        display: none;
+    }
+
 </style>
 
 <body>
@@ -49,6 +54,7 @@
     <div class="page-single">
         <div class="container">
             <div class="row ipad-width">
+
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class="user-information">
                         <div class="user-img">
@@ -60,7 +66,7 @@
                             <p>Account Details</p>
                             <ul>
                                 <li class="active"><a href="userprofile.html">Profile</a></li>
-                                <li><a href="userfavoritelist.html">Favorite movies</a></li>
+                                <li><button id="favoriteMovies">Favorite movies</button></li>
                                 <li><a href="userrate.html">Rated movies</a></li>
                             </ul>
                         </div>
@@ -73,73 +79,165 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-9 col-sm-12 col-xs-12">
-                    <div class="form-style-1 user-pro" action="">
 
-
-                        <form class="user" id="profileDetails">
-                            <h4>Profil Bilgilerim</h4>
-                            <div class="row">
-                                <div class="col-md-6 form-it">
-                                    <label>İsim</label>
-                                    <input type="text" id="firstName">
+                    <div id="mainContent">
+                        <div class="form-style-1 user-pro" action="">
+                            <form class="user" id="profileDetails">
+                                <h4>Profil Bilgilerim</h4>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>İsim</label>
+                                        <input type="text" id="firstName">
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>Soyisim</label>
+                                        <input type="text" id="lastName">
+                                    </div>
                                 </div>
-                                <div class="col-md-6 form-it">
-                                    <label>Soyisim</label>
-                                    <input type="text" id="lastName">
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Kullanıcı Adı</label>
+                                        <input type="text" id="userName">
+                                    </div>
+                                    <div class="col-md-6 form-it">
+                                        <label>E-Mail Adresi</label>
+                                        <input type="text" id="email">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 form-it">
-                                    <label>Kullanıcı Adı</label>
-                                    <input type="text" id="userName">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input id="btnKaydet" class="submit" type="submit" value="Kaydet">
+                                    </div>
                                 </div>
-                                <div class="col-md-6 form-it">
-                                    <label>E-Mail Adresi</label>
-                                    <input type="text" id="email">
+                            </form>
+                            <form class="password" id="passwordForm">
+                                <h4>02. Change password</h4>
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Güncel Parola</label>
+                                        <input type="text" id="oldPassword" placeholder="**********">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input id="btnKaydet" class="submit" type="submit" value="Kaydet">
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Yeni Parola</label>
+                                        <input type="text" id="newPassword" placeholder="***************">
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-
-
-                        <form class="password" id="passwordForm">
-                            <h4>02. Change password</h4>
-                            <div class="row">
-                                <div class="col-md-6 form-it">
-                                    <label>Güncel Parola</label>
-                                    <input type="text" id="oldPassword" placeholder="**********">
+                                <div class="row">
+                                    <div class="col-md-6 form-it">
+                                        <label>Yeni Parolayı Doğrula</label>
+                                        <input type="text" id="confirmNewPassword" placeholder="*************** ">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 form-it">
-                                    <label>Yeni Parola</label>
-                                    <input type="text" id="newPassword" placeholder="***************">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input id="btnParola" class="submit" type="submit" value="Kaydet">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 form-it">
-                                    <label>Yeni Parolayı Doğrula</label>
-                                    <input type="text" id="confirmNewPassword" placeholder="*************** ">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <input id="btnParola" class="submit" type="submit" value="Kaydet">
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
+
+
+                    <div id="footerBar">
+                        <div class="topbar-filter">
+                            <select id="filterbar">
+                                <option value="">Sıralama</option>
+                                <option value="NameAsc">İsim (A-Z)</option>
+                                <option value="NameDesc">İsim (Z-A)</option>
+                                <option value="ScoreAsc">Puan (Artan)</option>
+                                <option value="ScoreDesc">Puan (Azalan)</option>
+                            </select>
+                            <div class="pagination2">
+                            </div>
+                        </div>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </div>
     <script src="~/js/userjs.js"></script>
 </body>
+
+
 <script>
+    $(document).ready(function () {
+        // "Favorite Movies" linkine tıklanınca favori filmleri yükle
+        $('#favoriteMovies').click(function () {
+            loadMovies(1); // İlk sayfayı yükle
+        });
+
+        // Sıralama dropdown'unda değişiklik olduğunda filmleri yükle
+        $('#filterbar').change(function () {
+            var sortBy = $(this).val();
+            loadMovies(1, sortBy);
+        });
+
+        // Filmleri yükleme fonksiyonu
+        function loadMovies(page, sortBy = '') {
+            $.ajax({
+                url: '/User/UserFavoritedMovies',
+                method: 'GET',
+                data: {
+                    sortBy: sortBy,
+                    page: page,
+                    pageSize: 3
+                },
+                success: function (data) {
+                    var html = '';
+
+                    if (data.movies.length === 0) {
+                        html = '<p>Favori filmler bulunamadı.</p>';
+                        $('.topbar-filter').hide(); // Eğer film yoksa tamamen gizle
+                    } else {
+                        data.movies.forEach(function (movie) {
+                            html += `
+                                    <div class="flex-wrap-movielist user-fav-list">
+                                        <div class="movie-item-style-2">
+                                            <img src="${movie.image}" style="width:180px;height:277px" alt="">
+                                            <div class="mv-item-infor">
+                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        });
+
+                        $('#footerBar').show(); // Eğer film varsa filtreleme ve sayfalama alanını göster
+                    }
+
+                    $('#mainContent').html(html);
+                    updatePagination(data.totalPages, data.currentPage, sortBy);
+                },
+                error: function (xhr) {
+                    console.error("Hata oluştu:", xhr.responseText);
+                    $('#mainContent').html('<p>Filmler yüklenirken bir hata oluştu.</p>');
+                }
+            });
+        }
+
+        // Sayfalama güncelleme fonksiyonu
+        function updatePagination(totalPages, currentPage, sortBy) {
+            var paginationHtml = '';
+            for (var i = 1; i <= totalPages; i++) {
+                paginationHtml += `<a href="#" class="${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a>`;
+            }
+            $('.pagination2').html(paginationHtml);
+        }
+
+        // Sayfa butonlarına tıklandığında film listesini yükle
+        $(document).on('click', '.pagination2 a', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            var sortBy = $('#filterbar').val();
+            loadMovies(page, sortBy);
+        });
+    });
 
 </script>

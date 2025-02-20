@@ -1,4 +1,5 @@
 ﻿using DTO.UI_Dtos;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -130,6 +131,33 @@ namespace MovieProject.UI.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> UserFavoritedMovies(string? sortBy, int page = 1, int pageSize = 18)
+        {
+            // Kullanıcı ID'sini Claims'den al
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            int.TryParse(userIdClaim, out int userId);
+
+            var client = _client.CreateClient();
+            var response = await client.GetAsync($"https://localhost:44358/api/Movie/GetFavoritedMoviesByUserId?userId={userId}&sortBy={sortBy}&page={page}&pageSize={pageSize}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+                var paginatedMovies = Newtonsoft.Json.JsonConvert.DeserializeObject<PaginatedMovieDto>(jsonData);
+
+                return Json(new
+                {
+                    movies = paginatedMovies.Movies,
+                    totalPages = paginatedMovies.TotalPages,
+                    currentPage = page
+                });
+            }
+
+            return BadRequest();
+        }
+
 
 
     }

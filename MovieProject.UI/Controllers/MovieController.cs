@@ -93,7 +93,7 @@ namespace MovieProject.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchMovies(int? categoryId, string? sortBy, string? searchTerm, int page = 1, int pageSize = 18)
+        public async Task<JsonResult> SearchMovies(int? categoryId, string? sortBy, string? searchTerm, int page = 1, int pageSize = 18)
         {
             var client = _httpClientFactory.CreateClient();
             var url = $"https://localhost:44358/api/Movie/search?categoryId={categoryId}&searchTerm={searchTerm}&sortBy={sortBy}&page={page}&pageSize={pageSize}";
@@ -106,7 +106,7 @@ namespace MovieProject.UI.Controllers
 
                 return Json(values);
             }
-            return BadRequest("Film listesi alınamadı: " + response.ReasonPhrase);
+            return Json(new { success = false, message = "Hata!" });
         }
 
     }

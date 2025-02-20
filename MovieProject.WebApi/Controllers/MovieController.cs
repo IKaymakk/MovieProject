@@ -89,17 +89,26 @@ namespace MovieProject.WebApi.Controllers
 
             return Ok(result);
         }
+        [HttpGet("GetFavoritedMoviesByUserId")]
+        public async Task<IActionResult> GetFavoritedMovies([FromQuery] int userId, [FromQuery] string? sortBy, [FromQuery] int page = 1, [FromQuery] int pageSize = 18)
+        {
+            var query = new GetFavoritedMoviesByUserQuery
+            {
+                userid = userId,
+                SortBy = sortBy,
+                Page = page,
+                PageSize = pageSize
+            };
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
         [HttpGet("GetSimiilarMovies")]
         public async Task<IActionResult> GetSimilarMovies(string Hashtag)
         {
             var similarMovies = await _mediator.Send(new GetSimilarMoviesQuery(Hashtag));
             return Ok(similarMovies);
-        }
-        [HttpGet("GetFavoritedMoviesByUserId")]
-        public async Task<IActionResult> GetFavoritedMovies(int id)
-        {
-            var favMovies = await _mediator.Send(new GetFavoritedMoviesByUserQuery(id));
-            return Ok(favMovies);
         }
 
         #endregion

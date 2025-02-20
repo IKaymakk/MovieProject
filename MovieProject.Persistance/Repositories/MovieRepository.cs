@@ -284,9 +284,9 @@ namespace MovieProject.Persistance.Repositories
             return (movies, totalCount); // Filmler ve toplam kayıt sayısı döndürülüyor
         }
 
-        public async Task<List<Movie>> GetFavoritedMoviesByUser(int userId)
+        public async Task<(List<Movie>, int)> GetFavoritedMoviesByUser(int userId, string? sortBy, int page, int pageSize)
         {
-            var favoritedMovies = await _context.FavoriteMovies
+            var query = _context.FavoriteMovies
                 .AsNoTracking()
                 .Include(fm => fm.Movie)
                 .Include(fm => fm.AppUser)
@@ -298,12 +298,35 @@ namespace MovieProject.Persistance.Repositories
                     Image = fm.Movie.Image,
                     Score = fm.Movie.Score,
                     ReleaseDate = fm.Movie.ReleaseDate
-                }) 
-                .ToListAsync();
+                });
 
-            return favoritedMovies;
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                query = sortBy switch
+                {
+                    "NameAsc" => query.OrderBy(x => x.Name),
+                    "NameDesc" => query.OrderByDescending(x => x.Name),
+                    "ScoreAsc" => query.OrderBy(x => x.Score),
+                    "ScoreDesc" => query.OrderByDescending(x => x.Score),
+                    "ReleaseDateAsc" => query.OrderBy(x => x.ReleaseDate),
+                    "ReleaseDateDesc" => query.OrderByDescending(x => x.ReleaseDate),
+                    _ => query
+                };
+            }
+
+            // Toplam kayıt sayısı
+            var totalCount = await query.CountAsync();
+
+            // Sayfalama
+            if (page > 0 && pageSize > 0)
+            {
+                var skip = (page - 1) * pageSize;
+                query = query.Skip(skip).Take(pageSize);
+            }
+
+            var movies = await query.ToListAsync();
+            return (movies, totalCount);
         }
-
     }
 }
 
