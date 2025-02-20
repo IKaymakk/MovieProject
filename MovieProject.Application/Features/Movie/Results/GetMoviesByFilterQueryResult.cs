@@ -13,5 +13,18 @@ namespace MovieProject.Application.Features.Movie.Results
         public string Name { get; set; }
         public decimal Score { get; set; }
         public DateTime ReleaseDate { get; set; }
+        public string Description { get; set; }
+        public int RunTime { get; set; }
+        public string Director { get; set; }
+        public string Writer { get; set; }
+        public string Hashtag { get; set; }
+        public List<ActorResult> Actors { get; set; }
+
+    }
+    public class ActorResult
+    {
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

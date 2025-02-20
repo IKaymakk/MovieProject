@@ -150,6 +150,7 @@ namespace MovieProject.UI.Controllers
                 return Json(new
                 {
                     movies = paginatedMovies.Movies,
+                    actors = paginatedMovies.Actors,
                     totalPages = paginatedMovies.TotalPages,
                     currentPage = page
                 });

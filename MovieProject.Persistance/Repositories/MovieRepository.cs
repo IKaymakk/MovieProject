@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieProject.Application.DTOS;
 using MovieProject.Application.Features.Movie.Queries;
+using MovieProject.Application.Features.Movie.Results;
 using MovieProject.Application.Interfaces;
 using MovieProject.Persistance.Context;
 using MovieProject_Domain.Entities;
@@ -284,20 +285,36 @@ namespace MovieProject.Persistance.Repositories
             return (movies, totalCount); // Filmler ve toplam kayıt sayısı döndürülüyor
         }
 
-        public async Task<(List<Movie>, int)> GetFavoritedMoviesByUser(int userId, string? sortBy, int page, int pageSize)
+        public async Task<(List<GetMoviesByFilterQueryResult>, int)> GetFavoritedMoviesByUser(int userId, string? sortBy, int page, int pageSize)
         {
             var query = _context.FavoriteMovies
                 .AsNoTracking()
                 .Include(fm => fm.Movie)
+                .ThenInclude(m => m.Actors)
                 .Include(fm => fm.AppUser)
                 .Where(x => x.AppUserId == userId)
-                .Select(fm => new Movie
+                .Select(fm => new GetMoviesByFilterQueryResult
                 {
                     Id = fm.MovieId,
                     Name = fm.Movie.Name,
                     Image = fm.Movie.Image,
                     Score = fm.Movie.Score,
-                    ReleaseDate = fm.Movie.ReleaseDate
+                    Description = fm.Movie.Description,
+                    ReleaseDate = fm.Movie.ReleaseDate,
+                    RunTime = fm.Movie.RunTime,
+                    Director = fm.Movie.Director,
+                    Writer = fm.Movie.Writer,
+                    Hashtag = fm.Movie.HashTag,
+                    Actors = fm.Movie.Actors
+                        .OrderBy(a => a.Id)
+                        .Take(3)
+                        .Select(a => new ActorResult
+                        {
+                            Id = a.Id,
+                            FirstName = a.FirstName,
+                            LastName = a.LastName,
+                        })
+                        .ToList()
                 });
 
             if (!string.IsNullOrEmpty(sortBy))

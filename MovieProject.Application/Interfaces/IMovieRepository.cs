@@ -1,4 +1,5 @@
 ﻿using MovieProject.Application.DTOS;
+using MovieProject.Application.Features.Movie.Results;
 using MovieProject_Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace MovieProject.Application.Interfaces
         Task<(List<Movie>, int)> GetFilterMoviesListWithCount(FilterListDto options);
         Task<List<Movie>> GetSimilarMovies(string Hashtag);
         Task<(List<Movie>, int)> SearchMoviesWithSortingAndCount(string? searchTerm, string? sortBy, int page, int pageSize, int? categoryId);
-        Task<(List<Movie>, int)> GetFavoritedMoviesByUser(int userId, string? sortBy, int page, int pageSize);
+        Task<(List<GetMoviesByFilterQueryResult>, int)> GetFavoritedMoviesByUser(int userId, string? sortBy, int page, int pageSize);
 
 
     }

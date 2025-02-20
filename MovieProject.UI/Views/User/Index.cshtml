@@ -198,15 +198,20 @@
                     } else {
                         data.movies.forEach(function (movie) {
                             html += `
-                                    <div class="flex-wrap-movielist user-fav-list">
-                                        <div class="movie-item-style-2">
-                                            <img src="${movie.image}" style="width:180px;height:277px" alt="">
-                                            <div class="mv-item-infor">
-                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
-                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
-                                            </div>
-                                        </div>
-                                    </div>`;
+                                                    <div class="flex-wrap-movielist user-fav-list">
+                                                        <div class="movie-item-style-2">
+                                                            <img src="${movie.image}" style="width:180px;height:277px" alt="">
+                                                            <div class="mv-item-infor">
+                                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                                                                    <p class="describe">${movie.description}</p>
+                                                                                                            <p class="run-time"> ${movie.runTime} Dakika <span>${movie.hashtag}</span><span>Yayınlanma Tarihi ${new Date(movie.releaseDate).toLocaleDateString('tr-TR')}</span></p>
+                                                                                                                 <p>Yazar: <a href="#">${movie.writer}</a></p>
+                                                                                                                 <p>Yönetmen: <a href="#">${movie.director}</a></p>
+                                                                <p>Oyuncular: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>`;
                         });
 
                         $('#footerBar').show(); // Eğer film varsa filtreleme ve sayfalama alanını göster
