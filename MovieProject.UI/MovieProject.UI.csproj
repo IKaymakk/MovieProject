@@ -7,15 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\CommentJs.js" />
     <Content Remove="wwwroot\js\JavaScript.js" />
     <Content Remove="wwwroot\js\Login.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\CommentJs.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\JavaScript.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\CommentJs.js" />
     <None Include="wwwroot\js\JavaScript.js" />
     <None Include="wwwroot\js\Login.js" />
   </ItemGroup>

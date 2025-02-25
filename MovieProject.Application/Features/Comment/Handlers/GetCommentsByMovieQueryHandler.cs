@@ -2,6 +2,8 @@
 using MediatR;
 using MovieProject.Application.Features.Comment.Queries;
 using MovieProject.Application.Features.Comment.Results;
+using MovieProject.Application.Features.Movie.Queries;
+using MovieProject.Application.Features.Movie.Results;
 using MovieProject.Application.Interfaces;
 using MovieProject_Domain.Entities;
 using System;
@@ -12,28 +14,32 @@ using System.Threading.Tasks;
 
 namespace MovieProject.Application.Features.Comment.Handlers
 {
-    public class GetCommentsByMovieQueryHandler : IRequestHandler<GetCommentsByMovieQuery, List<GetCommentsByMovieQueryResult>>
+    public class GetCommentsByMovieQueryHandler : IRequestHandler<GetCommentsByMovieQuery, PaginatedCommentResult>
     {
-        private readonly IRepository<MovieProject_Domain.Entities.Comment> _repository;
+        private readonly ICommentRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetCommentsByMovieQueryHandler(IRepository<MovieProject_Domain.Entities.Comment> repository, IMapper mapper)
+        public GetCommentsByMovieQueryHandler(IMapper mapper, ICommentRepository repository)
         {
-            _repository = repository;
             _mapper = mapper;
+            _repository = repository;
         }
 
-        public async Task<List<GetCommentsByMovieQueryResult>> Handle(GetCommentsByMovieQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedCommentResult> Handle(GetCommentsByMovieQuery request, CancellationToken cancellationToken)
         {
-            var comments = await _repository.GetAllWithIncludesAsync(
-                x => x.MovieId == request.id, // Filtreleme: sadece istenen MovieId'ye göre
-                x => x.AppUser               // Include: Yorum yazan kullanıcı bilgisi
-            );
+            var (comments, totalCount) = await _repository.GetCommentsByMovieId(request.id, request.SortBy, request.Page, request.PageSize);
 
             var mappedComments = _mapper.Map<List<GetCommentsByMovieQueryResult>>(comments);
 
-            return mappedComments;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize);
 
+            return new PaginatedCommentResult
+            {
+                Comments = mappedComments,
+                TotalCount = totalCount,
+                TotalPages = totalPages,
+                CurrentPage = request.Page
+            };
         }
     }
 }

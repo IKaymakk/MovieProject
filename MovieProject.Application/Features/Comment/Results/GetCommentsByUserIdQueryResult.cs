@@ -15,6 +15,7 @@ namespace MovieProject.Application.Features.Comment.Results
 
         public string MovieImage { get; set; }
         public string CommentText { get; set; }
+        public string CommentTitle { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime MovieReleaseDate { get; set; }
 

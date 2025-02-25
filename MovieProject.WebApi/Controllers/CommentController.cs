@@ -18,9 +18,9 @@ namespace MovieProject.WebApi.Controllers
         }
 
         [HttpGet("GetCommentsByMovieId")]
-        public async Task<IActionResult> GetCommentsByMovieId(int id)
+        public async Task<IActionResult> GetCommentsByMovieId(int id, string? sortBy, int page, int pageSize)
         {
-            var values = await _mediator.Send(new GetCommentsByMovieQuery(id));
+            var values = await _mediator.Send(new GetCommentsByMovieQuery(id, sortBy, page, pageSize));
             return Ok(values);
         }
         [HttpGet("GetCommentsByUserId")]

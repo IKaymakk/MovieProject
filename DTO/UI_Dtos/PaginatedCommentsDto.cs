@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace DTO.UI_Dtos;
 
+public class PaginatedCommentsDto
+{
+    public List<CommentListDto> Comments { get; set; }
+    public int TotalCount { get; set; }
+    public int TotalPages { get; set; }
+    public int CurrentPage { get; set; }
+}
+
+
 public class CommentListDto
 {
     public int appUserId { get; set; }
@@ -19,3 +28,5 @@ public class CommentListDto
     public DateTime createdDate { get; set; }
 
 }
+
+

@@ -1,4 +1,5 @@
 ﻿<link href="~/css/modal.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 <div class="custom-modal" id="commentModal">
     <div class="modal-overlay"></div>
@@ -7,7 +8,7 @@
             <h3>Film Yorumu Ekle</h3>
             <button class="close-button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" />
                 </svg>
             </button>
         </div>
@@ -31,50 +32,51 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Modal elemanlarını seç
-    const modal = document.getElementById('commentModal');
-    const modalOverlay = modal.querySelector('.modal-overlay');
-    const closeButton = modal.querySelector('.close-button');
-    const cancelButton = modal.querySelector('.btn-cancel');
-    const form = document.getElementById('commentForm');
+    document.addEventListener('DOMContentLoaded', function () {
+        // Modal elemanlarını seç
+        const modal = document.getElementById('commentModal');
+        const modalOverlay = modal.querySelector('.modal-overlay');
+        const closeButton = modal.querySelector('.close-button');
+        const cancelButton = modal.querySelector('.btn-cancel');
+        const form = document.getElementById('commentForm');
 
-    // Modal'ı açma fonksiyonu
-    window.openCommentModal = function() {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden'; // Scroll'u engelle
-    };
+        // Modal'ı açma fonksiyonu
+        window.openCommentModal = function () {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Scroll'u engelle
+        };
 
-    // Modal'ı kapatma fonksiyonu
-    function closeModal() {
-        modal.style.display = 'none';
-        document.body.style.overflow = ''; // Scroll'u geri aç
-        form.reset(); // Formu temizle
-        clearErrors(); // Hata mesajlarını temizle
-    }
+        // Modal'ı kapatma fonksiyonu
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = ''; // Scroll'u geri aç
+            form.reset(); // Formu temizle
+            clearErrors(); // Hata mesajlarını temizle
+        }
 
-    // Hata mesajlarını temizleme
-    function clearErrors() {
-        document.querySelectorAll('.error-message').forEach(error => {
-            error.style.display = 'none';
-            error.textContent = '';
+        // Hata mesajlarını temizleme
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+                error.textContent = '';
+            });
+        }
+
+        // Kapatma olayları
+        [closeButton, cancelButton, modalOverlay].forEach(element => {
+            element.addEventListener('click', closeModal);
         });
-    }
 
-    // Kapatma olayları
-    [closeButton, cancelButton, modalOverlay].forEach(element => {
-        element.addEventListener('click', closeModal);
-    });
+        // Modal container'a tıklandığında kapanmasını engelle
+        modal.querySelector('.modal-container').addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
 
-    // Modal container'a tıklandığında kapanmasını engelle
-    modal.querySelector('.modal-container').addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-    // Form gönderimi
+        // Form gönderimi
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 commentText: document.getElementById('commentText').value.trim()
             };
 
-            // Form validasyonu
+            
             let isValid = true;
 
             if (!formData.commentTitle) {
@@ -101,12 +103,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!isValid) return;
 
-            // Loading durumunu göster
             submitButton.classList.add('loading');
             submitButton.disabled = true;
 
-            // Controller'a gönder
-            fetch('/Comment/AddComment', { // API yerine Controller'a istek atıldı
+            fetch('/Comment/AddComment', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,27 +117,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Yorumunuz başarıyla eklendi!');
+                        toastr.success('Yorumunuz başarıyla eklendi!');
                         closeModal();
+
                     } else {
-                        alert('Yorum eklenirken bir hata oluştu: ' + data.message);
+                        toastr.error('Yorum eklenirken bir hata oluştu: ' + data.message);
                     }
-                })
+                }) 
                 .catch(error => {
-                    alert('Yorum eklenirken bir hata oluştu: ' + error.message);
+                    toastr.error('Yorum eklenirken bir hata oluştu: ' + error.message);
                 })
                 .finally(() => {
                     submitButton.classList.remove('loading');
                     submitButton.disabled = false;
                 });
+
         });
 
 
-    // Input alanları değiştiğinde hata mesajlarını temizle
-    ['commentTitle', 'commentText'].forEach(id => {
-        document.getElementById(id).addEventListener('input', function() {
-            document.getElementById(id === 'commentTitle' ? 'titleError' : 'textError').style.display = 'none';
+        // Input alanları değiştiğinde hata mesajlarını temizle
+        ['commentTitle', 'commentText'].forEach(id => {
+            document.getElementById(id).addEventListener('input', function () {
+                document.getElementById(id === 'commentTitle' ? 'titleError' : 'textError').style.display = 'none';
+            });
         });
     });
-});
 </script>

@@ -22,6 +22,7 @@ namespace MovieProject.WebApi.Registration
             Services.AddScoped<IGenreRepository, GenreRepository>();
             Services.AddScoped<IActorRepository, ActorRepository>();
             Services.AddScoped<IAppUserRepository, AppUserRepository>();
+            Services.AddScoped<ICommentRepository, CommentRepository>();
 
 
 

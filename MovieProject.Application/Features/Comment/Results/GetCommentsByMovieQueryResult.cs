@@ -10,6 +10,7 @@ namespace MovieProject.Application.Features.Comment.Results
     {
         public int AppUserId { get; set; }
         public int MovieId { get; set; }
+        public string CommentTitle { get; set; }
         public string CommentText { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }

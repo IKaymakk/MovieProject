@@ -16,18 +16,30 @@ namespace MovieProject.UI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCommentsByMovieId(int id)
+        public async Task<IActionResult> GetCommentsByMovieId(int id, string? sortBy, int page, int pageSize)
         {
             var client = _http.CreateClient();
-            var response = await client.GetAsync($"https://localhost:44358/api/Comment/GetCommentsByMovieId?id={id}");
+            var response = await client.GetAsync($"https://localhost:44358/api/Comment/GetCommentsByMovieId?id={id}&sortBy={sortBy}&page={page}&pageSize={pageSize}");
+
             if (response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<CommentListDto>>(jsonData);
-                return Ok(values);
+                var values = JsonConvert.DeserializeObject<PaginatedCommentsDto>(jsonData);
+
+                TempData["CommentCount"] = values.TotalCount; // Toplam yorum sayısı
+
+                return Ok(new
+                {
+                    comments = values.Comments, // Sayfadaki yorumlar
+                    totalCount = values.TotalCount,// Toplam yorum sayısı
+                    totalPages = values.TotalPages
+                });
             }
+
             return BadRequest("Bilinmeyen Bir Hata Oluştu!..");
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddComment([FromBody] CreateCommentDto dto)
         {
@@ -44,10 +56,9 @@ namespace MovieProject.UI.Controllers
             var userId = User.FindFirst("UserId")?.Value;
             if (string.IsNullOrEmpty(userId))
             {
-                return Json(new { success = false, message = "Kullanıcı kimliği bulunamadı." });
+                return Json(new { success = false, message = "Yorum Yapabilmek İçin Oturum Açmanız Gerekmektedir." });
             }
             dto.appUserId = Convert.ToInt16(userId);
-
             if (!TempData.ContainsKey("MovieId"))
             {
                 return Json(new { success = false, message = "Film kimliği bulunamadı." });

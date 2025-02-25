@@ -24,7 +24,7 @@ namespace MovieProject.Application.Mapping
         public MapProfile()
         {
 
-            #region Movie
+                #region Movie
             CreateMap<Movie, GetAllMoviesWithGenresQueryResult>()
             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
             CreateMap<Movie, GetTop24MoviesQueryResult>()
