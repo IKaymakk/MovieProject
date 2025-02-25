@@ -5,6 +5,7 @@
     var wallpaper = Model.Image2;
 }
 
+
 <body>
     <div style="background:url('@wallpaper');background-size:cover!important" class="hero mv-single-hero">
         <div class="container">
@@ -79,7 +80,6 @@
                         </div>
                         <!----------------- movie rate ----------------->
 
-
                         <div class="movie-tabs">
                             <div class="tabs">
                                 <ul class="tab-links tabs-mv">
@@ -96,17 +96,11 @@
                                                 <br />
                                                 <p>@Model.Description2</p>
 
-
-
                                                 <!----------------- movie cast ----------------->
                                                 @await Component.InvokeAsync("_MovieDetailsActorsVC", new { id = Model.Id })
                                                 <!----------------- movie cast ----------------->
 
-
-
-
                                             </div>
-
                                             <!----------------- right block ----------------->
                                             <div class="col-md-4 col-xs-12 col-sm-12">
                                                 <div class="sb-it">
@@ -156,7 +150,10 @@
                                                 <div class="div">
                                                     <h2>İzleyiciler Bu Film Hakkında Ne Yorum Yapmış?</h2>
                                                 </div>
-                                                <a style="margin-right:2em" href="#" class="redbtn">Yorum Ekle</a>
+                                                <button onclick="openCommentModal()" class="comment-button redbtn">
+                                                    Yorum Ekle
+                                                </button>
+
                                             </div>
                                             <br />
                                             <div class="topbar-filter">
@@ -190,6 +187,8 @@
 
                                         </div>
                                     </div>
+
+
                                     <div id="cast" class="tab">
                                         <div class="row">
                                             <h3>Oyuncular & Ekip</h3>
@@ -239,130 +238,9 @@
 
                                         </div>
                                     </div>
-                                    <div id="media" class="tab">
-                                        <div class="row">
-                                            <div class="rv-hd">
-                                                <div>
-                                                    <h3>Videos & Photos of</h3>
-                                                    <h2>Skyfall: Quantum of Spectre</h2>
-                                                </div>
-                                            </div>
-                                            <div class="title-hd-sm">
-                                                <h4>Videos <span>(8)</span></h4>
-                                            </div>
-                                            <div class="mvsingle-item media-item">
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item1.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Trailer:  Watch New Scenes</a></h6>
-                                                        <p class="time"> 1: 31</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item2.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Featurette: “Avengers Re-Assembled</a></h6>
-                                                        <p class="time"> 1: 03</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item3.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Interview: Robert Downey Jr</a></h6>
-                                                        <p class="time"> 3:27</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item4.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Interview: Scarlett Johansson</a></h6>
-                                                        <p class="time"> 3:27</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item1.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Featurette: Meet Quicksilver & The Scarlet Witch</a></h6>
-                                                        <p class="time"> 1: 31</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item2.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Interview: Director Joss Whedon</a></h6>
-                                                        <p class="time"> 1: 03</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item3.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Interview: Mark Ruffalo</a></h6>
-                                                        <p class="time"> 3:27</p>
-                                                    </div>
-                                                </div>
-                                                <div class="vd-item">
-                                                    <div class="vd-it">
-                                                        <img class="vd-img" src="images/uploads/vd-item4.jpg" alt="">
-                                                        <a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="images/uploads/play-vd.png" alt=""></a>
-                                                    </div>
-                                                    <div class="vd-infor">
-                                                        <h6> <a href="#">Official Trailer #2</a></h6>
-                                                        <p class="time"> 3:27</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="title-hd-sm">
-                                                <h4>Photos <span> (21)</span></h4>
-                                            </div>
-                                            <div class="mvsingle-item">
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image11.jpg"><img src="images/uploads/image1.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image21.jpg"><img src="images/uploads/image2.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image31.jpg"><img src="images/uploads/image3.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image41.jpg"><img src="images/uploads/image4.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image51.jpg"><img src="images/uploads/image5.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image61.jpg"><img src="images/uploads/image6.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image71.jpg"><img src="images/uploads/image7.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image81.jpg"><img src="images/uploads/image8.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image91.jpg"><img src="images/uploads/image9.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image101.jpg"><img src="images/uploads/image10.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image111.jpg"><img src="images/uploads/image1-1.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image121.jpg"><img src="images/uploads/image12.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image131.jpg"><img src="images/uploads/image13.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image141.jpg"><img src="images/uploads/image14.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image151.jpg"><img src="images/uploads/image15.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image161.jpg"><img src="images/uploads/image16.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image171.jpg"><img src="images/uploads/image17.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image181.jpg"><img src="images/uploads/image18.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image191.jpg"><img src="images/uploads/image19.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image201.jpg"><img src="images/uploads/image20.jpg" alt=""></a>
-                                                <a class="img-lightbox" data-fancybox-group="gallery" href="images/uploads/image211.jpg"><img src="images/uploads/image2-1.jpg" alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-
 
                                     <div id="hashtag-container" data-hashtag="@Model.HashTag"></div>
+
                                     <div id="moviesrelated" class="tab">
                                         <div id="movie-list">
                                             <div class="row">
@@ -391,11 +269,15 @@
         </div>
     </div>
 
+    @await Html.PartialAsync("_CommentModal")
+
 
     <script src="js/jquery.js"></script>
     <script src="js/plugins.js"></script>
     <script src="js/plugins2.js"></script>
     <script src="js/custom.js"></script>
+    <script src="~/js/comment.js"></script>
+
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -430,16 +312,16 @@
             } else {
                 comments.forEach(function (comment) {
                     var commentHtml = `
-                                                                     <div class="mv-user-review-item">
-                                                                        <div class="user-infor">
-                                                                        <img src="${comment.appUserImage}" alt="User Avatar">
-                                                                                <div>
-                                                                                    <h3>${comment.firstName} ${comment.lastName}</h3>
-                                                                                    <p class="time"> ${new Date(comment.createdDate).toLocaleDateString()}<a style="margin-left:1em" href="#">${comment.userName}</a></p>
+                                                                             <div class="mv-user-review-item">
+                                                                                <div class="user-infor">
+                                                                                <img src="${comment.appUserImage}" alt="User Avatar">
+                                                                                        <div>
+                                                                                            <h3>${comment.firstName} ${comment.lastName}</h3>
+                                                                                            <p class="time"> ${new Date(comment.createdDate).toLocaleDateString()}<a style="margin-left:1em" href="#">${comment.userName}</a></p>
+                                                                                        </div>
                                                                                 </div>
-                                                                        </div>
-                                                                        <p>${comment.commentText}</p>
-                                                                     </div>`;
+                                                                                <p>${comment.commentText}</p>
+                                                                             </div>`;
                     commentContainer.append(commentHtml);
                 });
             }
@@ -486,19 +368,19 @@
             }
 
             const movieItem = `
-                                                        <div class="movie-item-style-2">
-                                                                    <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
-                                                            <div class="mv-item-infor">
-                                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
-                                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
-                                                              <a href="/Movie/MovieDetails/${movie.id}">
-                                                                <p class="describe">${shortDescription}</p>
-                                                             </a>
-                                                                <p class="run-time">Film Süresi: ${movie.runTime} min</p>
-                                                                <p>Yönetmen: <a href="#">${movie.director}</a></p>
-                                                                <p>Yazar: <a href="#">${movie.writer}</a></p>
-                                                            </div>
-                                                        </div>`;
+                                                                <div class="movie-item-style-2">
+                                                                            <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
+                                                                    <div class="mv-item-infor">
+                                                                        <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
+                                                                        <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
+                                                                      <a href="/Movie/MovieDetails/${movie.id}">
+                                                                        <p class="describe">${shortDescription}</p>
+                                                                     </a>
+                                                                        <p class="run-time">Film Süresi: ${movie.runTime} min</p>
+                                                                        <p>Yönetmen: <a href="#">${movie.director}</a></p>
+                                                                        <p>Yazar: <a href="#">${movie.writer}</a></p>
+                                                                    </div>
+                                                                </div>`;
             movieListContainer.append(movieItem); // Listeye ekliyoruz
         });
     }

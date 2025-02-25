@@ -52,6 +52,7 @@ namespace MovieProject.UI.Controllers
         public async Task<IActionResult> MovieDetails(int id)
         {
             ViewBag.MovieId = id;
+            TempData["MovieId"] = id;
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:44358/api/Movie/MovieDetails?id={id}");
             if (response.IsSuccessStatusCode)

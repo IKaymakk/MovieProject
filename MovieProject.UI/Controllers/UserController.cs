@@ -155,7 +155,6 @@ namespace MovieProject.UI.Controllers
                     currentPage = page
                 });
             }
-
             return BadRequest();
         }
 

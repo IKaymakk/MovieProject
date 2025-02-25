@@ -1,0 +1,143 @@
+﻿<link href="~/css/modal.css" rel="stylesheet" />
+
+<div class="custom-modal" id="commentModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3>Film Yorumu Ekle</h3>
+            <button class="close-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="commentTitle">Yorum Başlığı</label>
+                    <input type="text" id="commentTitle" name="commentTitle" required>
+                    <span class="error-message" id="titleError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="commentText">Yorumunuz</label>
+                    <textarea id="commentText" name="commentText" rows="4" required></textarea>
+                    <span class="error-message" id="textError"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel">İptal</button>
+                    <button type="submit" class="btn-submit">Yorum Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal elemanlarını seç
+    const modal = document.getElementById('commentModal');
+    const modalOverlay = modal.querySelector('.modal-overlay');
+    const closeButton = modal.querySelector('.close-button');
+    const cancelButton = modal.querySelector('.btn-cancel');
+    const form = document.getElementById('commentForm');
+
+    // Modal'ı açma fonksiyonu
+    window.openCommentModal = function() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Scroll'u engelle
+    };
+
+    // Modal'ı kapatma fonksiyonu
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = ''; // Scroll'u geri aç
+        form.reset(); // Formu temizle
+        clearErrors(); // Hata mesajlarını temizle
+    }
+
+    // Hata mesajlarını temizleme
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(error => {
+            error.style.display = 'none';
+            error.textContent = '';
+        });
+    }
+
+    // Kapatma olayları
+    [closeButton, cancelButton, modalOverlay].forEach(element => {
+        element.addEventListener('click', closeModal);
+    });
+
+    // Modal container'a tıklandığında kapanmasını engelle
+    modal.querySelector('.modal-container').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Form gönderimi
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitButton = form.querySelector('.btn-submit');
+            const formData = {
+                commentTitle: document.getElementById('commentTitle').value.trim(),
+                commentText: document.getElementById('commentText').value.trim()
+            };
+
+            // Form validasyonu
+            let isValid = true;
+
+            if (!formData.commentTitle) {
+                document.getElementById('titleError').textContent = 'Başlık gereklidir';
+                document.getElementById('titleError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!formData.commentText) {
+                document.getElementById('textError').textContent = 'Yorum gereklidir';
+                document.getElementById('textError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Loading durumunu göster
+            submitButton.classList.add('loading');
+            submitButton.disabled = true;
+
+            // Controller'a gönder
+            fetch('/Comment/AddComment', { // API yerine Controller'a istek atıldı
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Yorumunuz başarıyla eklendi!');
+                        closeModal();
+                    } else {
+                        alert('Yorum eklenirken bir hata oluştu: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Yorum eklenirken bir hata oluştu: ' + error.message);
+                })
+                .finally(() => {
+                    submitButton.classList.remove('loading');
+                    submitButton.disabled = false;
+                });
+        });
+
+
+    // Input alanları değiştiğinde hata mesajlarını temizle
+    ['commentTitle', 'commentText'].forEach(id => {
+        document.getElementById(id).addEventListener('input', function() {
+            document.getElementById(id === 'commentTitle' ? 'titleError' : 'textError').style.display = 'none';
+        });
+    });
+});
+</script>

@@ -10,6 +10,7 @@ public class CommentListDto
 {
     public int appUserId { get; set; }
     public int movieId { get; set; }
+    public string commentTitle { get; set; }
     public string commentText { get; set; }
     public string userName { get; set; }
     public string firstName { get; set; }

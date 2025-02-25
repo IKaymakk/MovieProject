@@ -60,21 +60,19 @@
                         <div class="user-img">
                             <a href="#"><img id="userimg" src="" style="width:170px;height:170px" alt=""><br></a>
                             <br />
-                            <a href="#" class="redbtn">Change avatar</a>
+                            <a href="#" class="redbtn">Avatarı Değiştir</a>
                         </div>
                         <div class="user-fav">
-                            <p>Account Details</p>
+                            <p>Hesap Detayları</p>
                             <ul>
-                                <li class="active"><a href="userprofile.html">Profile</a></li>
-                                <li><button id="favoriteMovies">Favorite movies</button></li>
-                                <li><a href="userrate.html">Rated movies</a></li>
+                                <li class="active"><a href="/User/Index">Profil</a></li>
+                                <li><a id="favoriteMovies" href="#">Favori Filmlerim</a></li>
+                                <li><a href="userrate.html">Film Yorumlarım</a></li>
                             </ul>
                         </div>
                         <div class="user-fav">
-                            <p>Others</p>
                             <ul>
-                                <li><a href="#">Change password</a></li>
-                                <li><a href="#">Log out</a></li>
+                                <li><a href="#">Çıkış Yap</a></li>
                             </ul>
                         </div>
                     </div>
@@ -194,27 +192,32 @@
 
                     if (data.movies.length === 0) {
                         html = '<p>Favori filmler bulunamadı.</p>';
-                        $('.topbar-filter').hide(); // Eğer film yoksa tamamen gizle
+                        $('.topbar-filter').hide();
                     } else {
                         data.movies.forEach(function (movie) {
+                            let actorsHtml = (movie.actors && movie.actors.length > 0)
+                                ? movie.actors.map(actor => `<a href="#">${actor.firstName} ${actor.lastName}</a>`).join(', ')
+                                : "Bilgi yok"; // Boşsa hata almamak için
+
                             html += `
-                                                    <div class="flex-wrap-movielist user-fav-list">
-                                                        <div class="movie-item-style-2">
-                                                            <img src="${movie.image}" style="width:180px;height:277px" alt="">
-                                                            <div class="mv-item-infor">
-                                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
-                                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
-                                                                                    <p class="describe">${movie.description}</p>
-                                                                                                            <p class="run-time"> ${movie.runTime} Dakika <span>${movie.hashtag}</span><span>Yayınlanma Tarihi ${new Date(movie.releaseDate).toLocaleDateString('tr-TR')}</span></p>
-                                                                                                                 <p>Yazar: <a href="#">${movie.writer}</a></p>
-                                                                                                                 <p>Yönetmen: <a href="#">${movie.director}</a></p>
-                                                                <p>Oyuncular: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>`;
+                                        <div class="flex-wrap-movielist user-fav-list">
+                                            <div class="movie-item-style-2">
+                                                <img src="${movie.image}" style="width:180px;height:277px" alt="">
+                                                <div class="mv-item-infor">
+                                                    <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name}</a></h6>
+                                                    <p class="rate"><i class="ion-android-star"></i><span>${movie.score.toFixed(1)}</span> /10</p>
+                                                    <p class="describe">${movie.description.substring(0, 300)}...</p>
+                                                    <p class="run-time"> ${movie.runTime} Dakika <span>#${movie.hashtag}</span>
+                                                    <span>Yayınlanma Tarihi ${new Date(movie.releaseDate).toLocaleDateString('tr-TR')}</span></p>
+                                                    <p>Yazar: <a href="#">${movie.writer}</a></p>
+                                                    <p>Yönetmen: <a href="#">${movie.director}</a></p>
+                                                    <p>Oyuncular: ${actorsHtml}</p>
+                                                </div>
+                                            </div>
+                                        </div>`;
                         });
 
-                        $('#footerBar').show(); // Eğer film varsa filtreleme ve sayfalama alanını göster
+                        $('#footerBar').show();
                     }
 
                     $('#mainContent').html(html);

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieProject.Application.Features.Comment.Commands;
 using MovieProject.Application.Features.Comment.Queries;
 
 namespace MovieProject.WebApi.Controllers
@@ -28,5 +29,20 @@ namespace MovieProject.WebApi.Controllers
             var values = await _mediator.Send(new GetCommentsByUserIdQuery(id));
             return Ok(values);
         }
+        [HttpPost("CreateComment")]
+        public async Task<IActionResult> CreateComment(AddCommentCommand command)
+        {
+            try
+            {
+                await _mediator.Send(command);
+                return Ok("Yorum Eklendi");
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hata Oluştu", ex);
+            }
+        }
+
     }
 }

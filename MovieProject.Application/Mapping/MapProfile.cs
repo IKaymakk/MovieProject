@@ -2,6 +2,7 @@
 using MovieProject.Application.Features.Actor.Results;
 using MovieProject.Application.Features.AppUser.Commands;
 using MovieProject.Application.Features.AppUser.Results;
+using MovieProject.Application.Features.Comment.Commands;
 using MovieProject.Application.Features.Comment.Results;
 using MovieProject.Application.Features.Genre.Results;
 using MovieProject.Application.Features.Movie.Commands;
@@ -59,6 +60,8 @@ namespace MovieProject.Application.Mapping
                 .ReverseMap();
 
             CreateMap<Comment, GetCommentsByUserIdQueryResult>()
+                .ReverseMap(); 
+            CreateMap<Comment, AddCommentCommand>()
                 .ReverseMap();
             #endregion
 

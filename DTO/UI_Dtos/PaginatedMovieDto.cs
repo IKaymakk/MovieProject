@@ -27,6 +27,8 @@ public class MovieDto
     public string Director { get; set; }
     public string Writer { get; set; }
     public string Hashtag { get; set; }
+    public List<ActorDto> Actors { get; set; }  // <--- Eksik olabilir
+
 }
 
 
