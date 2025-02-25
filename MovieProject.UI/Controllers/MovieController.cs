@@ -110,5 +110,27 @@ namespace MovieProject.UI.Controllers
             return Json(new { success = false, message = "Hata!" });
         }
 
+        [HttpPost]
+        public async Task<JsonResult> AddFavoriteMovie()
+        {
+            int appUserId = Convert.ToInt16(User.FindFirst("UserId")?.Value);
+            var xx = TempData["MovieId"];
+            int movieId = Convert.ToInt16(xx);
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.PostAsJsonAsync("https://localhost:44358/api/FavoriteMovies/AddFavMovies", new { appUserId, movieId });
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Film favorilere eklendi" });
+            }
+
+            return Json(new { success = false, message = "İşlem başarısız: " + responseContent });
+        }
+
+
     }
 }

@@ -4,6 +4,7 @@ using MovieProject.Application.Features.AppUser.Commands;
 using MovieProject.Application.Features.AppUser.Results;
 using MovieProject.Application.Features.Comment.Commands;
 using MovieProject.Application.Features.Comment.Results;
+using MovieProject.Application.Features.FavoriteMovie.Command;
 using MovieProject.Application.Features.Genre.Results;
 using MovieProject.Application.Features.Movie.Commands;
 using MovieProject.Application.Features.Movie.Queries;
@@ -24,7 +25,7 @@ namespace MovieProject.Application.Mapping
         public MapProfile()
         {
 
-                #region Movie
+            #region Movie
             CreateMap<Movie, GetAllMoviesWithGenresQueryResult>()
             .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.MovieGenres.Select(mg => mg.Genre.Name).ToList()));
             CreateMap<Movie, GetTop24MoviesQueryResult>()
@@ -60,7 +61,7 @@ namespace MovieProject.Application.Mapping
                 .ReverseMap();
 
             CreateMap<Comment, GetCommentsByUserIdQueryResult>()
-                .ReverseMap(); 
+                .ReverseMap();
             CreateMap<Comment, AddCommentCommand>()
                 .ReverseMap();
             #endregion
@@ -71,7 +72,9 @@ namespace MovieProject.Application.Mapping
             CreateMap<UpdateUserDetailsCommand, AppUser>().ReverseMap();
             #endregion
 
-           
+            #region FavoriteMovies
+            CreateMap<CreateFavoriteMovieCommand, FavoriteMovie>().ReverseMap();
+            #endregion
         }
     }
 }
