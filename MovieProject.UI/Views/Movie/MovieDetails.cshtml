@@ -45,7 +45,7 @@
                         <!----------------- favorite ----------------->
                         <div class="social-btn">
                             <a href="#" class="parent-btn addfav">
-                                <i class="ion-heart"></i> Favorilere Ekle
+                                <i class="ion-heart"></i> Favorilerden Kaldır
                             </a>
 
                             <div class="hover-bnt">
@@ -289,33 +289,77 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <script>
     $(document).ready(function () {
+        // Sayfa yüklendiğinde favori durumu kontrol et
+        checkFavoriteStatus();
+
+        // Butona tıklandığında favori ekleme/kaldırma işlemi
         $(".addfav").click(function (e) {
             e.preventDefault(); // Sayfanın yenilenmesini engelle
 
+
+            // Favori ekleme/kaldırma işlemi
             $.ajax({
-                url: "/Movie/AddFavoriteMovie",
+                url: "/Movie/AddFavoriteMovie", // Favori ekleme/kaldırma işlemi
                 type: "POST",
-                contentType: "application/json", // JSON formatında veri gönder
-                dataType: "json",
                 success: function (response) {
                     if (response.success) {
                         toastr.success(response.message, "Başarılı!");
+
+                        checkFavoriteStatus();
+
+                        setTimeout(function () {
+                            location.reload(); // Sayfayı yenileyin
+                        }, 1000); 
                     } else {
-                        toastr.error("Hata: " +  "İşlem Başarısız!");
+                        toastr.error(response.message);
+                        checkFavoriteStatus();
+                        setTimeout(function () {
+                            location.reload(); // Sayfayı yenileyin
+                        }, 1000);
                     }
                 },
                 error: function (xhr) {
                     console.log(xhr.responseText);
                     toastr.error("Bir hata oluştu, lütfen tekrar deneyin.", "Hata!");
+                    $(".addfav").html('<i class="ion-heart"></i> Hata Oluştu');
                 }
             });
         });
+
+        // Favori durumu kontrolü yapan fonksiyon
+        function checkFavoriteStatus() {
+            $.ajax({
+                url: "/Movie/CheckFavoriteStatus", // Favori durumu kontrol et
+                type: "POST",
+                success: function (response) {
+                    if (response.success !== undefined) {
+                        if (response.isFavorited === true) {
+                            $(".addfav").html('<i class="ion-heart"></i> Favorilerden Kaldır');
+                        } else if (response.isFavorited === false) {
+                            $(".addfav").html('<i class="ion-heart"></i> Favorilere Ekle');
+                        } 
+                    } else {
+                        $(".addfav").html('<i class="ion-heart"></i> Favori Durumu Bulunamadı');
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    toastr.error("Favori durumu kontrol edilirken bir hata oluştu.");
+                    $(".addfav").html('<i class="ion-heart"></i> Hata Oluştu');
+                }
+            });
+        }
     });
 
 
 </script>
+
+
+  
+
 
 <script>
     $(document).ready(function () {
@@ -355,19 +399,19 @@
             } else {
                 comments.forEach(function (comment) {
                     var commentHtml = `
-                                        <div class="mv-user-review-item">
-                                            <div class="user-infor">
-                                                <img src="${comment.appUserImage}" style="width:50px;height:50px;border-radius:10px" alt="User Avatar">
-                                                <div>
-                                                    <h3>${comment.commentTitle}</h3>
-                                                    <p class="time">${new Date(comment.createdDate).toLocaleDateString()}
-                                                        <a style="margin-left:1em" href="#">${comment.userName}</a>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <br>
-                                            <p>${comment.commentText}</p>
-                                        </div>`;
+                                                <div class="mv-user-review-item">
+                                                    <div class="user-infor">
+                                                        <img src="${comment.appUserImage}" style="width:50px;height:50px;border-radius:10px" alt="User Avatar">
+                                                        <div>
+                                                            <h3>${comment.commentTitle}</h3>
+                                                            <p class="time">${new Date(comment.createdDate).toLocaleDateString()}
+                                                                <a style="margin-left:1em" href="#">${comment.userName}</a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <p>${comment.commentText}</p>
+                                                </div>`;
                     commentContainer.append(commentHtml);
                 });
             }
@@ -454,19 +498,19 @@
             }
 
             const movieItem = `
-                                                                                                        <div class="movie-item-style-2">
-                                                                                                                    <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
-                                                                                                            <div class="mv-item-infor">
-                                                                                                                <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
-                                                                                                                <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
-                                                                                                              <a href="/Movie/MovieDetails/${movie.id}">
-                                                                                                                <p class="describe">${shortDescription}</p>
-                                                                                                             </a>
-                                                                                                                <p class="run-time">Film Süresi: ${movie.runTime} min</p>
-                                                                                                                <p>Yönetmen: <a href="#">${movie.director}</a></p>
-                                                                                                                <p>Yazar: <a href="#">${movie.writer}</a></p>
-                                                                                                            </div>
-                                                                                                        </div>`;
+                                                                                                                <div class="movie-item-style-2">
+                                                                                                                            <img style="height:330px;" src="${movie.image}" alt="${movie.name}">
+                                                                                                                    <div class="mv-item-infor">
+                                                                                                                        <h6><a href="/Movie/MovieDetails/${movie.id}">${movie.name} <span>(${new Date(movie.releaseDate).getFullYear()})</span></a></h6>
+                                                                                                                        <p class="rate"><i class="ion-android-star"></i><span>${movie.score}</span> /10</p>
+                                                                                                                      <a href="/Movie/MovieDetails/${movie.id}">
+                                                                                                                        <p class="describe">${shortDescription}</p>
+                                                                                                                     </a>
+                                                                                                                        <p class="run-time">Film Süresi: ${movie.runTime} min</p>
+                                                                                                                        <p>Yönetmen: <a href="#">${movie.director}</a></p>
+                                                                                                                        <p>Yazar: <a href="#">${movie.writer}</a></p>
+                                                                                                                    </div>
+                                                                                                                </div>`;
             movieListContainer.append(movieItem); // Listeye ekliyoruz
         });
     }

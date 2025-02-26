@@ -1,6 +1,7 @@
 ﻿using DTO.UI_Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieProject_Domain.Entities;
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 
@@ -24,7 +25,6 @@ namespace MovieProject.UI.Controllers
                 var jsondata = await response.Content.ReadAsStringAsync();
                 var paginatedMovies = JsonConvert.DeserializeObject<PaginatedMovieDto>(jsondata);
                 TempData["moviecount2"] = paginatedMovies.Movies.Count();
-                // PaginatedMovieDto modelini view'e gönder
                 return View(paginatedMovies);
             }
 
@@ -53,6 +53,7 @@ namespace MovieProject.UI.Controllers
         {
             ViewBag.MovieId = id;
             TempData["MovieId"] = id;
+            HttpContext.Session.SetInt32("MovieId", id);
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:44358/api/Movie/MovieDetails?id={id}");
             if (response.IsSuccessStatusCode)
@@ -114,21 +115,42 @@ namespace MovieProject.UI.Controllers
         public async Task<JsonResult> AddFavoriteMovie()
         {
             int appUserId = Convert.ToInt16(User.FindFirst("UserId")?.Value);
-            var xx = TempData["MovieId"];
-            int movieId = Convert.ToInt16(xx);
+            int? movieId = HttpContext.Session.GetInt32("MovieId");
 
             var client = _httpClientFactory.CreateClient();
             var response = await client.PostAsJsonAsync("https://localhost:44358/api/FavoriteMovies/AddFavMovies", new { appUserId, movieId });
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseContent);
 
             if (response.IsSuccessStatusCode)
             {
                 return Json(new { success = true, message = "Film favorilere eklendi" });
             }
 
-            return Json(new { success = false, message = "İşlem başarısız: " + responseContent });
+            return Json(new { success = false, message =  responseContent });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CheckFavoriteStatus()
+        {
+            int appUserId = Convert.ToInt16(User.FindFirst("UserId")?.Value);
+            var movieId = HttpContext.Session.GetInt32("MovieId");
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:44358/api/FavoriteMovies/CheckFavoriteStatus?userId={appUserId}&movieId={movieId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+                if (result.isFavorited == true)
+                {
+                    return Json(new { success = true, isFavorited = true });
+                }
+            }
+
+            return Json(new { success = false, isFavorited = false });
         }
 
 

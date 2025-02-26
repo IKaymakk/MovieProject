@@ -8,23 +8,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieProject.Application.Features.FavoriteMovie.Handler
+namespace MovieProject.Application.Features.FavoriteMovie.Handler;
+
+public class CreateFavoriteMovieCommandHandler : IRequestHandler<CreateFavoriteMovieCommand, bool>
 {
-    public class CreateFavoriteMovieCommandHandler : IRequestHandler<CreateFavoriteMovieCommand>
+    private readonly IFavoriteMovieRepository _repository;
+    private readonly IMapper _mapper;
+
+    public CreateFavoriteMovieCommandHandler(IFavoriteMovieRepository repository, IMapper mapper)
     {
-        private readonly IRepository<MovieProject_Domain.Entities.FavoriteMovie> _repository;
-        private readonly IMapper _mapper;
-
-        public CreateFavoriteMovieCommandHandler(IRepository<MovieProject_Domain.Entities.FavoriteMovie> repository, IMapper mapper)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
-
-        public async Task Handle(CreateFavoriteMovieCommand request, CancellationToken cancellationToken)
-        {
-            var mappedFavMovies = _mapper.Map<MovieProject_Domain.Entities.FavoriteMovie>(request);
-            await _repository.CreateAsync(mappedFavMovies);
-        }
+        _repository = repository;
+        _mapper = mapper;
     }
+
+    public async Task<bool> Handle(CreateFavoriteMovieCommand request, CancellationToken cancellationToken)
+    {
+        var isFavorited = await _repository.ChangeFavoritedStatus(request.AppUserId, request.MovieId);
+        return isFavorited;
+    }
+
+
 }
