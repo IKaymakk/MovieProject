@@ -29,31 +29,17 @@ $(document).ready(function () {
 
         // Kullanıcı bilgilerini almak
         var userDetails = {
-            firstName: $("#firstName").val().trim(),
-            lastName: $("#lastName").val().trim(),
-            mailAddress: $("#email").val().trim(),
-            userName: $("#userName").val().trim()
+            firstName: $("#firstName").val(),
+            lastName: $("#lastName").val(),
+            mailAddress: $("#email").val(),
+            userName: $("#userName").val()
         };
 
-        // E-posta alanı boşsa hata ver
-        if (!userDetails.mailAddress) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Eksik E-posta!',
-                text: 'Lütfen geçerli bir e-posta adresi giriniz.',
-                confirmButtonText: 'Tamam'
-            });
-            return; // İşlemi durdur
-        }
+
 
         // Formdaki alanların hepsi dolu olmalı
-        if (!userDetails.firstName || !userDetails.lastName || !userDetails.userName) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Eksik Bilgi!',
-                text: 'Lütfen tüm alanları doldurduğunuzdan emin olun.',
-                confirmButtonText: 'Tamam',
-            });
+        if (!userDetails.firstName || !userDetails.lastName || !userDetails.userName || !userDetails.mailAddress) {
+            toastr.error("Lütfen Tüm Alanları Doldurun!");
             return;
         }
 
@@ -64,21 +50,12 @@ $(document).ready(function () {
             data: JSON.stringify(userDetails),
             dataType: "json",
             success: function (response) {
-                console.log("Sunucudan gelen yanıt:", response);
                 if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
+                    toastr.success("Başarılı : " + response.message);
+
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
+                    toastr.error("Hata : " + response.message);
+
                 }
             },
             error: function (xhr, status, error) {
@@ -105,22 +82,13 @@ $(document).ready(function () {
         };
 
         if (!dtoObjects.oldPassword || !dtoObjects.newPassword) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Eksik Bilgi!',
-                text: 'Lütfen tüm alanları doldurduğunuzdan emin olun.',
-                confirmButtonText: 'Tamam',
-            });
+            toastr.error("Lütfen Tüm Alanları Doldurun!");
             return;
         }
 
         if (dtoObjects.confirmNewPassword != dtoObjects.newPassword) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Eksik Bilgi!',
-                text: 'Şifreleriniz Eşleşmiyor.',
-                confirmButtonText: 'Tamam',
-            });
+            toastr.error("Şifreleriniz Eşleşmiyor!");
+
             return;
         }
         $.ajax({
@@ -131,19 +99,13 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
+                    toastr.success("Başarılı : " + response.message);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000); // 2 saniye bekleyip sayfayı yenile
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: response.message,
-                        confirmButtonText: 'Tamam'
-                    });
+                    toastr.error("Hata : " + response.message);
+
                 }
             },
             error: function (xhr, status, error) {

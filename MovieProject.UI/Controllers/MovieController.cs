@@ -116,7 +116,10 @@ namespace MovieProject.UI.Controllers
         {
             int appUserId = Convert.ToInt16(User.FindFirst("UserId")?.Value);
             int? movieId = HttpContext.Session.GetInt32("MovieId");
-
+            if (appUserId == null || appUserId == 0)
+            {
+                return Json(new { success = false, message = "Filmi Favorilere Eklemek İçin Giriş Yapmanız Gerekmektedir." });
+            }
             var client = _httpClientFactory.CreateClient();
             var response = await client.PostAsJsonAsync("https://localhost:44358/api/FavoriteMovies/AddFavMovies", new { appUserId, movieId });
 
@@ -127,7 +130,7 @@ namespace MovieProject.UI.Controllers
                 return Json(new { success = true, message = "Film favorilere eklendi" });
             }
 
-            return Json(new { success = false, message =  responseContent });
+            return Json(new { success = false, message = responseContent });
         }
 
         [HttpPost]
@@ -135,6 +138,10 @@ namespace MovieProject.UI.Controllers
         {
             int appUserId = Convert.ToInt16(User.FindFirst("UserId")?.Value);
             var movieId = HttpContext.Session.GetInt32("MovieId");
+            if(appUserId == null || appUserId == 0)
+            {
+                return Json(new { success = false, message = "Filmi Favorilere Eklemek İçin Giriş Yapmanız Gerekmektedir." });
+            }
 
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:44358/api/FavoriteMovies/CheckFavoriteStatus?userId={appUserId}&movieId={movieId}");
