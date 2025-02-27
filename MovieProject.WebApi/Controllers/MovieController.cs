@@ -130,6 +130,13 @@ namespace MovieProject.WebApi.Controllers
             return Ok("Film Güncellendi");
         }
 
+        [HttpPut("AddScore")]
+        public async Task<IActionResult> AddScoreToMovie(AddScoreToMovieCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("Puan Verildi");
+        }
+
         #endregion
 
         #region HttpDelete
