@@ -77,11 +77,7 @@ public class LoginController : Controller
     [HttpPost]
     public async Task<JsonResult> SignUp([FromBody] CreateAppUserDto dto)
     {
-        dto.appRoleId = 1;
-        if (!ModelState.IsValid)
-        {
-            return Json(new { success = false, message = "Lütfen tüm alanları doldurun." });
-        }
+
 
         try
         {
@@ -90,6 +86,9 @@ public class LoginController : Controller
 
             if (!response.IsSuccessStatusCode)
             {
+                if (!ModelState.IsValid)
+                    return Json(new { success = false, message = "Lütfen tüm alanları doldurun." });
+
                 var errorMessage = await response.Content.ReadAsStringAsync();
                 return Json(new { success = false, message = $"Hata: {errorMessage}" });
             }
