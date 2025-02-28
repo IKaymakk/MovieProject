@@ -200,7 +200,7 @@
                         data.movies.forEach(function (movie) {
                             let actorsHtml = (movie.actors && movie.actors.length > 0)
                                 ? movie.actors.map(actor => `<a href="#">${actor.firstName} ${actor.lastName}</a>`).join(', ')
-                                : "Bilgi yok"; // Boşsa hata almamak için
+                                : "Bilgi yok";
 
                             html += `
                                         <div class="flex-wrap-movielist user-fav-list">

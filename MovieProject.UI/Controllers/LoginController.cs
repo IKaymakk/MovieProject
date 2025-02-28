@@ -75,16 +75,33 @@ public class LoginController : Controller
     }
 
     [HttpPost]
-    public async Task<JsonResult> SignUp(CreateAppUserDto dto)
+    public async Task<JsonResult> SignUp([FromBody] CreateAppUserDto dto)
     {
-        var client = _httpClientFactory.CreateClient();
-        var response = await client.PostAsJsonAsync("https://localhost:44358/api/AppUser/CreateUser", dto);
-        if (!response.IsSuccessStatusCode)
+        dto.appRoleId = 1;
+        if (!ModelState.IsValid)
         {
-            return Json(new { success = false, message = "Hata!" });
+            return Json(new { success = false, message = "Lütfen tüm alanları doldurun." });
         }
-        return Json(new { success = true, message = "Kayıt Başarılı" });
+
+        try
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.PostAsJsonAsync("https://localhost:44358/api/AppUser/CreateUser", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                return Json(new { success = false, message = $"Hata: {errorMessage}" });
+            }
+
+            return Json(new { success = true, message = "Kayıt Başarılı" });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
+        }
     }
+
     [HttpGet]
     public async Task<IActionResult> Logout()
     {

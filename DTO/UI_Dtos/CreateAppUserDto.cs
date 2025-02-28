@@ -14,4 +14,5 @@ public class CreateAppUserDto
     public string email { get; set; }        // Değiştirildi
     public string image { get; set; }
     public string password { get; set; }
+    public int appRoleId { get; set; } = 1;
 }

@@ -15,5 +15,6 @@ namespace MovieProject.Application.Features.AppUser.Commands
         public string MailAddress { get; set; }
         public string Image { get; set; }
         public string Password { get; set; }
+        public int AppRoleId { get; set; } = 1;
     }
 }
