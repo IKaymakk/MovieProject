@@ -44,6 +44,11 @@ namespace MovieProject.Persistance.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<bool> AnyAsync(Expression<Func<Movie, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Movie> GetByFilterAsync(Expression<Func<Movie, bool>> filter)
         {
             throw new NotImplementedException();

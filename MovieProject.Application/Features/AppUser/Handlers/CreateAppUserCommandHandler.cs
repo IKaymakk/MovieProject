@@ -14,23 +14,32 @@ namespace MovieProject.Application.Features.AppUser.Handlers
     {
         private readonly IRepository<MovieProject_Domain.Entities.AppUser> _repository;
         private readonly IMapper _mapper;
-        public CreateAppUserCommandHandler(IRepository<MovieProject_Domain.Entities.AppUser> repository, IMapper mapper)
+        private readonly IAppUserRepository _appuserrepository;
+
+        public CreateAppUserCommandHandler(IRepository<MovieProject_Domain.Entities.AppUser> repository, IMapper mapper, IAppUserRepository _appuserrepository)
         {
             _mapper = mapper;
+            this._appuserrepository = _appuserrepository;
             _repository = repository;
         }
         public async Task Handle(CreateAppUserCommand request, CancellationToken cancellationToken)
         {
-            await _repository.CreateAsync(new MovieProject_Domain.Entities.AppUser
+            if (await _repository.AnyAsync(x => x.UserName == request.UserName))
+                throw new Exception("Bu kullanıcı adı zaten kayıtlı.");
+
+            var user = new MovieProject_Domain.Entities.AppUser
             {
                 FirstName = request.FirstName,
-                UserName = request.UserName,
                 LastName = request.LastName,
+                UserName = request.UserName,
                 MailAddress = request.MailAddress,
                 Image = request.Image,
-                Password = request.Password,
+                Password = _appuserrepository.Hash(request.Password),
                 AppRoleId = 1
-            });
+            };
+
+            await _repository.CreateAsync(user);
         }
+            
     }
 }

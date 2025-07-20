@@ -67,7 +67,6 @@ namespace MovieProject.WebApi.Controllers
         {
             var validationResult = await _validator.ValidateAsync(command);
 
-            // Validation hatalarını kontrol et ve sadece hata mesajlarını döndür
             if (!validationResult.IsValid)
             {
                 var errorMessages = validationResult.Errors

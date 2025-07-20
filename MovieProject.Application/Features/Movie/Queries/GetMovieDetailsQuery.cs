@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace MovieProject.Application.Features.Movie.Queries
 {
-    public class GetMovieDetailsQuery : IRequest<GetMovieDetailsQueryResult>
+    public class GetMovieDetailsQuery(int id) : IRequest<GetMovieDetailsQueryResult>
     {
-        public int id { get; set; }
-
-        public GetMovieDetailsQuery(int id)
-        {
-            this.id = id;
-        }
+        public int id { get; set; } = id;
     }
 }

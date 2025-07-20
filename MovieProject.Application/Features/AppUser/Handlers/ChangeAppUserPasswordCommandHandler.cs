@@ -15,27 +15,32 @@ namespace MovieProject.Application.Features.AppUser.Handlers
     public class ChangeAppUserPasswordCommandHandler : IRequestHandler<ChangeAppUserPasswordCommand, Result>
     {
         private readonly IRepository<MovieProject_Domain.Entities.AppUser> _repository;
+        private readonly IAppUserRepository _appUserRepository;
 
-        public ChangeAppUserPasswordCommandHandler(IRepository<MovieProject_Domain.Entities.AppUser> repository)
+        public ChangeAppUserPasswordCommandHandler(IRepository<MovieProject_Domain.Entities.AppUser> repository, IAppUserRepository _appUserRepository)
         {
             _repository = repository;
+            this._appUserRepository = _appUserRepository;
         }
 
         public async Task<Result> Handle(ChangeAppUserPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByIdAsync(request.id);
+            if (user == null)
+                return Result.Failure("Kullanıcı bulunamadı.");
 
-            if (user.Password != request.oldPassword)
-            {
+            bool isOldPasswordCorrect = await _appUserRepository.VerifyAndFixHashIfNeeded(user, request.oldPassword);
+            if (!isOldPasswordCorrect)
                 return Result.Failure("Eski şifreniz hatalı.");
-            }
 
-            user.Password = request.newPassword;
-
+            // Yeni şifreyi hashle ve kaydet
+            user.Password = _appUserRepository.Hash(request.newPassword);
             await _repository.UpdateAsync(user);
 
             return Result.Success();
         }
+
+
 
     }
 }

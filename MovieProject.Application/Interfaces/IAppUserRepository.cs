@@ -12,5 +12,11 @@ namespace MovieProject.Application.Interfaces
     {
         Task<string> GetAppUserRoleAsync(int id);
         Task<UserDataDto> CheckUser(CheckUserDto checkUserDto);
+        string Hash(string password);
+        bool Verify(string hashedPassword, string plainPassword);
+        bool IsHashed(string password);
+        Task<bool> VerifyAndFixHashIfNeeded(AppUser user, string plainPassword);
+
+
     }
 }

@@ -10,15 +10,9 @@ using System.Threading.Tasks;
 
 namespace MovieProject.Application.Features.Genre.Handler
 {
-    public class CreateGenreCommandHandler : IRequestHandler<CreateGenreCommand>
+    public class CreateGenreCommandHandler(IRepository<MovieProject_Domain.Entities.Genre> repository)
+        : IRequestHandler<CreateGenreCommand>
     {
-        private readonly IRepository<MovieProject_Domain.Entities.Genre> _repository;
-
-        public CreateGenreCommandHandler(IRepository<MovieProject_Domain.Entities.Genre> repository)
-        {
-            _repository = repository;
-        }
-
         public async Task Handle(CreateGenreCommand request, CancellationToken cancellationToken)
         {
             var newgenre = new MovieProject_Domain.Entities.Genre
@@ -26,7 +20,7 @@ namespace MovieProject.Application.Features.Genre.Handler
                 Image = request.Image,
                 Name = request.Name,
             };
-            await _repository.CreateAsync(newgenre);
+            await repository.CreateAsync(newgenre);
         }
     }
 }
