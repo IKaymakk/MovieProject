@@ -17,23 +17,28 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
     {
         private readonly IMovieGenreRepository _movieGenreRepository;
         private readonly IMapper _mapper;
+        private readonly IRedisCacheService _redisCacheService;
 
-        public GetAllMoviesWithGenresQueryHandler(IMovieGenreRepository movieGenreRepository, IMapper mapper)
+        public GetAllMoviesWithGenresQueryHandler(IMovieGenreRepository movieGenreRepository, IMapper mapper, IRedisCacheService redisCacheService)
         {
             _movieGenreRepository = movieGenreRepository;
             _mapper = mapper;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<List<GetAllMoviesWithGenresQueryResult>> Handle(GetAllMoviesWithGenresQuery request, CancellationToken cancellationToken)
         {
+            string cacheKey = "all_movies_with_genres";
+
+            // Cache’den dene
+            var cachedData = await _redisCacheService.GetAsync<List<GetAllMoviesWithGenresQueryResult>>(cacheKey);
+            if (cachedData != null)
+            {
+                return cachedData;
+            }
+
+            // Cache boşsa veritabanından çek
             var movieGenres = await _movieGenreRepository.GetAllMoviesWithGenres();
-
-
-            //AutoMapper Kullansaydık
-            //var mappedmovieswithgenres = _mapper.Map<List<GetAllMoviesWithGenresQueryResult>>(movieGenres);
-            //return mappedmovieswithgenres;
-            //AutoMapper Kullansaydık
-
 
             var result = movieGenres.Select(movie => new GetAllMoviesWithGenresQueryResult
             {
@@ -53,12 +58,15 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
                 ImbdScore = movie.ImbdScore,
                 ReleaseDate = movie.ReleaseDate,
 
-                Genres = movie.MovieGenres.Select(g => g.Genre.Name).ToList() // Sadece isimleri alıyoruz
+                Genres = movie.MovieGenres.Select(g => g.Genre.Name).ToList()
 
             }).ToList();
 
-            return result;
+            // Sonucu cache’e koy, örneğin 5 dakika sakla
+            await _redisCacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5));
 
+            return result;
         }
+
     }
 }

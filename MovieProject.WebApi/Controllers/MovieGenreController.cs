@@ -40,12 +40,4 @@ public class MovieGenreController : ControllerBase
         return Ok("Başarılı Bir Şekilde Filme Tür Eklendi.");
     }
     #endregion
-
-
-    #region HttpPut
-    #endregion
-
-
-    #region HttpDelete
-    #endregion
 }
