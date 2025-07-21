@@ -7,12 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieProject.Persistance.Repositories
+namespace MovieProject.Persistance.Repositories;
+
+public class GenreRepository : Repository<Genre>, IGenreRepository
 {
-    public class GenreRepository : Repository<Genre>, IGenreRepository
+    public GenreRepository(MovieContext movieContext) : base(movieContext)
     {
-        public GenreRepository(MovieContext movieContext) : base(movieContext)
-        {
-        }
     }
 }

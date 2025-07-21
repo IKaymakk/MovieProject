@@ -28,7 +28,7 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
 
         public async Task<List<GetAllMoviesWithGenresQueryResult>> Handle(GetAllMoviesWithGenresQuery request, CancellationToken cancellationToken)
         {
-            string cacheKey = "all_movies_with_genres";
+            const string cacheKey = "slider_movies_cache";
 
             // Cache’den dene
             var cachedData = await _redisCacheService.GetAsync<List<GetAllMoviesWithGenresQueryResult>>(cacheKey);
