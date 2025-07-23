@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using MovieProject.Application.Features.MovieGenre.Queries;
 using MovieProject.Application.Features.MovieGenre.Results;
 using MovieProject.Application.Interfaces;
 using MovieProject_Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -18,26 +20,39 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
         private readonly IMovieGenreRepository _movieGenreRepository;
         private readonly IMapper _mapper;
         private readonly IRedisCacheService _redisCacheService;
+        private readonly IConfiguration _configuration;
 
-        public GetAllMoviesWithGenresQueryHandler(IMovieGenreRepository movieGenreRepository, IMapper mapper, IRedisCacheService redisCacheService)
+        public GetAllMoviesWithGenresQueryHandler(IMovieGenreRepository movieGenreRepository, IMapper mapper, IRedisCacheService redisCacheService, IConfiguration configuration)
         {
             _movieGenreRepository = movieGenreRepository;
             _mapper = mapper;
             _redisCacheService = redisCacheService;
+            _configuration = configuration;
         }
 
         public async Task<List<GetAllMoviesWithGenresQueryResult>> Handle(GetAllMoviesWithGenresQuery request, CancellationToken cancellationToken)
         {
-            const string cacheKey = "slider_movies_cache";
+            var stopwatch = Stopwatch.StartNew();
 
-            // Cache’den dene
-            var cachedData = await _redisCacheService.GetAsync<List<GetAllMoviesWithGenresQueryResult>>(cacheKey);
-            if (cachedData != null)
+            const string cacheKey = "slider_movies_cache";
+            var duration = TimeSpan.FromMinutes(_configuration.GetValue<int>("CacheSettings:DefaultCacheDuration", 5));
+
+            // Cache'den çekmeyi dene
+            try
             {
-                return cachedData;
+                var cachedData = await _redisCacheService.GetAsync<List<GetAllMoviesWithGenresQueryResult>>(cacheKey);
+                if (cachedData != null)
+                {
+                    Console.WriteLine($"CACHE VERİSİ | Süre: {stopwatch.ElapsedMilliseconds} ms");
+                    return cachedData;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Redis hatası (Get): {ex.Message} | Cache atlanıyor...");
             }
 
-            // Cache boşsa veritabanından çek
+            // Cache boşsa DB'den çek
             var movieGenres = await _movieGenreRepository.GetAllMoviesWithGenres();
 
             var result = movieGenres.Select(movie => new GetAllMoviesWithGenresQueryResult
@@ -45,26 +60,24 @@ namespace MovieProject.Application.Features.MovieGenre.Handlers
                 Id = movie.Id,
                 Name = movie.Name,
                 Image = movie.Image,
-                Image2 = movie.Image2,
-                Description = movie.Description,
-                Description2 = movie.Description2,
-                Director = movie.Director,
-                Writer = movie.Writer,
-                Trailer = movie.Trailer,
-                HashTag = movie.HashTag,
                 Score = movie.Score,
-                CreatedDate = movie.CreatedDate,
                 RunTime = movie.RunTime,
-                ImbdScore = movie.ImbdScore,
                 ReleaseDate = movie.ReleaseDate,
-
-                Genres = movie.MovieGenres.Select(g => g.Genre.Name).ToList()
-
+                Genres = movie.Genres
             }).ToList();
 
-            // Sonucu cache’e koy, örneğin 5 dakika sakla
-            await _redisCacheService.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5));
+            // Cache'e yazmayı dene
+            try
+            {
+                await _redisCacheService.SetAsync(cacheKey, result, duration);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Redis hatası (Set): {ex.Message} | Cache yazılamadı.");
+            }
 
+            stopwatch.Stop();
+            Console.WriteLine($"CACHE YOK | DB'den çekildi | Süre: {stopwatch.ElapsedMilliseconds} ms");
             return result;
         }
 

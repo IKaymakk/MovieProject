@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using MovieProject.Application.DTOS;
 
 namespace MovieProject.Persistance.Repositories;
 
@@ -30,17 +31,24 @@ public class MovieGenreRepository : IMovieGenreRepository
         throw new NotImplementedException();
     }
 
-    public async Task<List<Movie>> GetAllMoviesWithGenres()
+    public async Task<List<MovieDto>> GetAllMoviesWithGenres()
     {
-        var movies = await _context.Movies
-            .Include(m => m.MovieGenres)
-            .ThenInclude(mg => mg.Genre)
-            .OrderBy(x => x.CreatedDate)
+        return await _context.Movies
+            .OrderByDescending(m => m.Id)
             .Take(5)
+            .Select(m => new MovieDto
+            {
+                Id = m.Id,
+                Name = m.Name,
+                Image = m.Image,
+                Score = m.Score,
+                RunTime = m.RunTime,
+                ReleaseDate = m.ReleaseDate,
+                Genres = m.MovieGenres.Select(mg => mg.Genre.Name).ToList()
+            })
             .ToListAsync();
-
-        return movies;
     }
+
 
     public Task<List<MovieGenre>> GetAllAsync()
     {
