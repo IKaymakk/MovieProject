@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using MovieProject.Application.Features.MovieGenre.Queries;
 using MovieProject.Application.Features.MovieGenre.Results;
 using MovieProject.Application.Interfaces;
+using MovieProject.Application.Interfaces.Redis;
 using MovieProject_Domain.Entities;
 using System;
 using System.Collections.Generic;

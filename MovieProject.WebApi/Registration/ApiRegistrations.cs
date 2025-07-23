@@ -1,8 +1,10 @@
 ﻿using MovieProject.Application.Features.Genre.Handler;
 using MovieProject.Application.Features.Movie.Handler;
 using MovieProject.Application.Interfaces;
+using MovieProject.Application.Interfaces.Redis;
 using MovieProject.Persistance.Context;
 using MovieProject.Persistance.Repositories;
+using MovieProject.Persistance.Repositories.Redis;
 
 namespace MovieProject.WebApi.Registration
 {
@@ -15,7 +17,6 @@ namespace MovieProject.WebApi.Registration
             Services.AddScoped<GetMovieByIdQueryHandler>();
             Services.AddScoped<GetAllGenresQueryHandler>();
 
-
             Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             Services.AddScoped<IMovieRepository, MovieRepository>();
             Services.AddScoped<IMovieGenreRepository, MovieGenreRepository>();
@@ -25,8 +26,8 @@ namespace MovieProject.WebApi.Registration
             Services.AddScoped<ICommentRepository, CommentRepository>();
             Services.AddScoped<IFavoriteMovieRepository, FavoriteMovieRepository>();
 
-
-
+            Services.AddSingleton<IRedisConnectionFactory, RedisConnectionFactory>();
+            Services.AddScoped<IRedisCacheService, RedisCacheService>();
         }
     }
 }

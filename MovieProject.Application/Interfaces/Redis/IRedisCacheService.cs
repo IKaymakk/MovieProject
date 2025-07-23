@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieProject.Application.Interfaces;
+namespace MovieProject.Application.Interfaces.Redis;
 
 public interface IRedisCacheService
 {

@@ -1,11 +1,11 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using MovieProject.Application.Interfaces;
+using MovieProject.Application.Interfaces.Redis;
 using MovieProject.Application.JWT;
 using MovieProject.Application.Registrations;
 using MovieProject.Application.Validator.AppUser;
-using MovieProject.Persistance.Repositories;
+using MovieProject.Persistance.Repositories.Redis;
 using MovieProject.WebApi.Registration;
 using StackExchange.Redis;
 using System.Text;
@@ -16,11 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ChangePasswordValidator>());
 ;
-builder.Services.AddSingleton<ConnectionMultiplexer>(sp =>
-{
-    var configuration = builder.Configuration.GetValue<string>("Redis:ConnectionString") ?? "localhost:6379";
-    return ConnectionMultiplexer.Connect(configuration);
-});
+
 
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +51,23 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var factory = scope.ServiceProvider.GetRequiredService<IRedisConnectionFactory>();
+
+    if (factory.IsRedisAvailable)
+    {
+        Console.WriteLine("?? Uygulama Redis ile baþladý");
+        Console.WriteLine("?? Cache sistemi aktif");
+    }
+    else
+    {
+        Console.WriteLine("?? Uygulama Redis OLMADAN baþladý");
+        Console.WriteLine("??  Cache sistemi devre dýþý (fallback mode)");
+        Console.WriteLine("?? Arka planda yeniden baðlanma denemeleri yapýlacak");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {
