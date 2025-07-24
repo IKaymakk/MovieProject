@@ -1,4 +1,7 @@
-﻿using MovieProject.Application.Features.Genre.Handler;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using MovieProject.Application.Behaviors;
+using MovieProject.Application.Features.Genre.Handler;
 using MovieProject.Application.Features.Movie.Handler;
 using MovieProject.Application.Interfaces;
 using MovieProject.Application.Interfaces.Redis;
@@ -28,6 +31,10 @@ namespace MovieProject.WebApi.Registration
 
             Services.AddSingleton<IRedisConnectionFactory, RedisConnectionFactory>();
             Services.AddScoped<IRedisCacheService, RedisCacheService>();
+            Services.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
+            Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
+
+
         }
     }
 }

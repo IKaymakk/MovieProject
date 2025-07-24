@@ -12,13 +12,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+IConfiguration configuration;
 // Add services to the container.
 
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ChangePasswordValidator>());
 ;
 
 
-builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddApiApplicationServices(builder.Configuration);
@@ -52,22 +52,22 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var factory = scope.ServiceProvider.GetRequiredService<IRedisConnectionFactory>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var factory = scope.ServiceProvider.GetRequiredService<IRedisConnectionFactory>();
 
-    if (factory.IsRedisAvailable)
-    {
-        Console.WriteLine("?? Uygulama Redis ile baþladý");
-        Console.WriteLine("?? Cache sistemi aktif");
-    }
-    else
-    {
-        Console.WriteLine("?? Uygulama Redis OLMADAN baþladý");
-        Console.WriteLine("??  Cache sistemi devre dýþý (fallback mode)");
-        Console.WriteLine("?? Arka planda yeniden baðlanma denemeleri yapýlacak");
-    }
-}
+//    if (factory.IsRedisAvailable)
+//    {
+//        Console.WriteLine("?? Uygulama Redis ile baþladý");
+//        Console.WriteLine("?? Cache sistemi aktif");
+//    }
+//    else
+//    {
+//        Console.WriteLine("?? Uygulama Redis OLMADAN baþladý");
+//        Console.WriteLine("??  Cache sistemi devre dýþý (fallback mode)");
+//        Console.WriteLine("?? Arka planda yeniden baðlanma denemeleri yapýlacak");
+//    }
+//}
 
 if (app.Environment.IsDevelopment())
 {
@@ -77,6 +77,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization(); 
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
