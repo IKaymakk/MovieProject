@@ -29,6 +29,7 @@ Filmleri favorileyebilir, puan verebilir ve yorum yazabilir
 🏗️ Teknik Mimarisi
 Katman	Açıklama
 Backend	.NET Core 8 Web API + MSSQL
+Performans Kazanımı İçin Redis
 Frontend	Ajax + jQuery + JavaScript (Tamamen API üzerinden dinamik veri yönetimi)
 Authentication	JSON Web Token (JWT)
 Validation	FluentValidation ile güçlü veri doğrulama
